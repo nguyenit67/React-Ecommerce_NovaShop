@@ -1,10 +1,44 @@
-import AlbumFeature from "./features/Album";
-import TodoFeature from "./features/Todo";
+import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import NotFound from './components/NotFound';
+import AlbumFeature from './features/Album';
+import CounterFeature from './features/Counter';
+import TodoFeature from './features/Todo';
+import './App.css';
+import Header from 'components/Header';
 
 function App() {
+  // useEffect(() => {
+  //   const fetchProducts = async () => {
+  //     const params = {
+  //       _limit: 10,
+  //     };
+  //     const productList = await productApi.getAll(params);
+  //     // console.log(productList);
+  //   };
+
+  //   fetchProducts();
+  // }, []);
+
   return (
-    <div className="App">
-      <TodoFeature />
+    <div className="app">
+      <Header />
+
+      <p>
+        <Link to="/todos">Todos</Link>
+      </p>
+      <p>
+        <Link to="/albums">Albums</Link>
+      </p>
+      <Switch>
+        <Redirect from="/home" to="/" />
+        <Redirect from="/post-list/:postId" to="/posts/:postId" />
+
+        <Route path="/" component={CounterFeature} exact />
+        <Route path="/todos" component={TodoFeature} />
+        <Route path="/albums" component={AlbumFeature} />
+
+        <Route component={NotFound} />
+      </Switch>
     </div>
   );
 }

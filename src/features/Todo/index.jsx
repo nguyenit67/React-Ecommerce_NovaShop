@@ -1,70 +1,24 @@
-import React, { useState } from 'react';
-import TodoList from './components/TodoList';
+import React from 'react';
+import { Route, Switch } from 'react-router-dom';
+import { useRouteMatch } from 'react-router-dom';
+import NotFound from '../../components/NotFound';
+import DetailPage from './pages/DetailPage';
+import ListPage from './pages/ListPage';
 
 TodoFeature.propTypes = {};
 
 function TodoFeature(props) {
-  const initialTodoList = [
-    {
-      id: 1,
-      title: 'Metal',
-      status: 'new',
-    },
-    {
-      id: 2,
-      title: 'Granite',
-      status: 'completed',
-    },
-    {
-      id: 3,
-      title: 'Wooden',
-      status: 'new',
-    },
-  ];
-
-  const [todoList, setTodoList] = useState(initialTodoList);
-  const [filterStatus, setFilterStatus] = useState('all');
-
-  const handleTodoClick = (todo, idx) => {
-    // clone current todo list
-    const newTodoList = [...todoList];
-
-    // toggle state
-    newTodoList[idx] = {
-      ...newTodoList[idx],
-      status: newTodoList[idx].status === 'new' ? 'completed' : 'new',
-    };
-
-    // update todo list
-    setTodoList(newTodoList);
-  };
-
-  const handleShowAllClick = () => {
-    setFilterStatus('all');
-  };
-
-  const handleShowCompletedClick = () => {
-    setFilterStatus('completed');
-  };
-
-  const handleShowNewClick = () => {
-    setFilterStatus('new');
-  };
-
-  const renderedTodoList = todoList.filter((todo) => {
-    return filterStatus === 'all' || filterStatus === todo.status;
-  });
+  const match = useRouteMatch();
 
   return (
     <div>
-      <h3>Todo List</h3>
-      <TodoList todoList={renderedTodoList} onTodoClick={handleTodoClick} />
+      TODO SHARED UI
+      <Switch>
+        <Route path={match.path} component={ListPage} exact />
+        <Route path={`${match.path}/:todoId`} component={DetailPage} exact />
 
-      <div>
-        <button onClick={handleShowAllClick}>Show All</button>
-        <button onClick={handleShowCompletedClick}>Show Completed</button>
-        <button onClick={handleShowNewClick}>Show New</button>
-      </div>
+        <Route component={NotFound} />
+      </Switch>
     </div>
   );
 }
