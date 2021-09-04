@@ -1,6 +1,6 @@
 const useErrorRHF = (form, name) => {
-  const { errors, formState } = form;
-  const hasError = formState.touched[name] && errors[name];
+  const { errors } = form;
+  const hasError = errors[name]; /* && formState.touched[name]; */
   const errorMessage = errors[name]?.message;
 
   return {

@@ -1,10 +1,10 @@
-import { Link, Redirect, Route, Switch } from 'react-router-dom';
+import Header from 'components/Header';
+import { Redirect, Route, Switch } from 'react-router-dom';
+import './App.css';
 import NotFound from './components/NotFound';
 import AlbumFeature from './features/Album';
 import CounterFeature from './features/Counter';
 import TodoFeature from './features/Todo';
-import './App.css';
-import Header from 'components/Header';
 
 function App() {
   // useEffect(() => {
@@ -23,12 +23,12 @@ function App() {
     <div className="app">
       <Header />
 
-      <p>
+      {/* <p>
         <Link to="/todos">Todos</Link>
       </p>
       <p>
         <Link to="/albums">Albums</Link>
-      </p>
+      </p> */}
       <Switch>
         <Redirect from="/home" to="/" />
         <Redirect from="/post-list/:postId" to="/posts/:postId" />
