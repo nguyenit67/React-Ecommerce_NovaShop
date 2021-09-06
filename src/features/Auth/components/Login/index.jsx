@@ -22,10 +22,8 @@ function Login({ closeDialog }) {
       // do something here on login successfully
       // close dialog
       closeDialog?.();
-
-      enqueueSnackbar('Login successfully', { variant: 'success' });
     } catch (error) {
-      console.log('Fail to login', error);
+      console.log('Fail to login:', error);
       enqueueSnackbar(error.message, { variant: 'error' });
     }
   };
