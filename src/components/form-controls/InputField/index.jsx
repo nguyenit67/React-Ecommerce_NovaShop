@@ -31,7 +31,7 @@ function InputField(props) {
       error={hasError}
       helperText={errorMessage}
       // my custom bonus
-      autoComplete="off"
+      // autoComplete="off"
     />
   );
 }

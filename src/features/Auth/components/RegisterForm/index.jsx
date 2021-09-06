@@ -1,5 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Avatar, Button, makeStyles, Typography } from '@material-ui/core';
+// import {
+//   Avatar,
+//   Button,
+//   LinearProgress,
+//   makeStyles,
+//   Typography,
+// } from '@material-ui/core';
+import Avatar from '@material-ui/core/Avatar';
+import Button from '@material-ui/core/Button';
+import { makeStyles } from '@material-ui/core/styles';
+import Typography from '@material-ui/core/Typography';
+import LinearProgress from '@material-ui/core/LinearProgress';
+
 import LockOutlined from '@material-ui/icons/LockOutlined';
 import InputField from 'components/form-controls/InputField';
 import PasswordField from 'components/form-controls/PasswordField';
@@ -9,6 +21,7 @@ import * as yup from 'yup';
 
 const useStyles = makeStyles((theme) => ({
   root: {
+    position: 'relative',
     paddingTop: theme.spacing(4),
   },
   avatar: {
@@ -22,13 +35,19 @@ const useStyles = makeStyles((theme) => ({
   submit: {
     margin: theme.spacing(2, 0, 2, 0),
   },
+  progress: {
+    position: 'absolute',
+    top: theme.spacing(1),
+    left: 0,
+    right: 0,
+  },
 }));
 
 RegisterForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
-function RegisterForm(props) {
+function RegisterForm({ onSubmit }) {
   const classes = useStyles();
 
   const schema = yup.object().shape({
@@ -68,13 +87,16 @@ function RegisterForm(props) {
     resolver: yupResolver(schema),
   });
 
-  const handleFormSubmit = (values) => {
-    props.onSubmit?.(values);
-    form.reset();
+  const handleFormSubmit = async (values) => {
+    await onSubmit?.(values);
   };
+
+  const { isSubmitting } = form.formState;
 
   return (
     <div className={classes.root}>
+      {isSubmitting && <LinearProgress className={classes.progress} />}
+
       <Avatar className={classes.avatar}>
         <LockOutlined />
       </Avatar>
@@ -99,6 +121,8 @@ function RegisterForm(props) {
           variant="contained"
           color="primary"
           fullWidth
+          size="large"
+          disabled={isSubmitting}
         >
           Create an account
         </Button>
