@@ -1,10 +1,37 @@
+import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
 import React from 'react';
-import { useRouteMatch } from 'react-router-dom';
+
+const useStyles = makeStyles((theme) => ({
+  root: {},
+  left: {
+    width: '250px',
+  },
+  right: {
+    flex: '1 1 auto',
+  },
+}));
 
 function ListPage(props) {
-  const match = useRouteMatch();
+  const classes = useStyles();
 
-  return <div>Product Listing Page</div>;
+  return (
+    <div>
+      <Box {...{} /* section.product-list-page */}>
+        <Container>
+          {' '}
+          {/* div.container */}
+          <Grid container spacing={1}>
+            <Grid item className={classes.left}>
+              <Paper elevation={0}>Left</Paper>
+            </Grid>
+            <Grid item className={classes.right}>
+              <Paper elevation={0}>Right</Paper>
+            </Grid>
+          </Grid>
+        </Container>
+      </Box>
+    </div>
+  );
 }
 
 export default ListPage;
