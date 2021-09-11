@@ -1,5 +1,8 @@
 import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
-import React from 'react';
+import productApi from 'api/productApi';
+import React, { useEffect, useState } from 'react';
+import ProductList from '../components/ProductList';
+import ProductSkeletonList from '../components/ProductSkeletonList';
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -7,30 +10,54 @@ const useStyles = makeStyles((theme) => ({
     width: '250px',
   },
   right: {
-    flex: '1 1 auto',
+    flex: '1 1 0',
   },
 }));
 
 function ListPage(props) {
   const classes = useStyles();
+  const [productList, setProductList] = useState([]);
+  const [loading, setLoading] = useState(true);
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const { data } = await productApi.getAll({ _page: 1, _limit: 20 });
+        setProductList(data);
+      } catch (error) {
+        console.log('Fail to fetch product list', { error });
+      }
+
+      setLoading(false);
+    })();
+  }, []);
+
+  /* 
+    section.product-list-page 
+    |_.container
+      |_.row
+        |_.column   
+  */
   return (
-    <div>
-      <Box {...{} /* section.product-list-page */}>
-        <Container>
-          {' '}
-          {/* div.container */}
-          <Grid container spacing={1}>
-            <Grid item className={classes.left}>
-              <Paper elevation={0}>Left</Paper>
-            </Grid>
-            <Grid item className={classes.right}>
-              <Paper elevation={0}>Right</Paper>
-            </Grid>
+    <Box>
+      {/*  */}
+      <Container>
+        <Grid container spacing={1}>
+          <Grid item className={classes.left}>
+            <Paper elevation={0}>Left</Paper>
           </Grid>
-        </Container>
-      </Box>
-    </div>
+          <Grid item className={classes.right}>
+            <Paper elevation={0}>
+              {loading ? (
+                <ProductSkeletonList />
+              ) : (
+                <ProductList data={productList} />
+              )}
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
   );
 }
 
