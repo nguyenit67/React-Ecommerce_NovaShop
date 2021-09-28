@@ -13,6 +13,14 @@ const useStyles = makeStyles((theme) => ({
   right: {
     flex: '1 1 0',
   },
+  pagination: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    justifyContent: 'center',
+
+    marginTop: '30px',
+    paddingBottom: '20px',
+  },
 }));
 
 function ListPage(props) {
@@ -56,7 +64,6 @@ function ListPage(props) {
   */
   return (
     <Box>
-      {/*  */}
       <Container>
         <Grid container spacing={1}>
           <Grid item className={classes.left}>
@@ -69,13 +76,14 @@ function ListPage(props) {
               ) : (
                 <ProductList data={productList} />
               )}
-
-              <Pagination
-                color="primary"
-                count={Math.ceil(pagination.total / pagination.limit)}
-                page={pagination.page}
-                onChange={handlePaginationChange}
-              />
+              <Box className={classes.pagination}>
+                <Pagination
+                  color="primary"
+                  count={Math.ceil(pagination.total / pagination.limit)}
+                  page={pagination.page}
+                  onChange={handlePaginationChange}
+                />
+              </Box>
             </Paper>
           </Grid>
         </Grid>
