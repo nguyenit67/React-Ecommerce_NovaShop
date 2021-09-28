@@ -82,6 +82,8 @@ function ListPage(props) {
                   count={Math.ceil(pagination.total / pagination.limit)}
                   page={pagination.page}
                   onChange={handlePaginationChange}
+                  siblingCount={1}
+                  boundaryCount={2}
                 />
               </Box>
             </Paper>
