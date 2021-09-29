@@ -22,7 +22,7 @@ function ProductFilters({ filters, onChange }) {
   };
 
   const handlePriceChange = (values) => {
-    console.log({ values });
+    console.log(values);
   };
 
   return (
