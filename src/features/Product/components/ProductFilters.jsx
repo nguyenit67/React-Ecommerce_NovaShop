@@ -14,15 +14,16 @@ function ProductFilters({ filters, onChange }) {
     if (!onChange) return;
 
     const newFilters = {
-      ...filters,
       'category.id': newCategoryId,
     };
 
     onChange(newFilters);
   };
 
-  const handlePriceChange = (values) => {
-    console.log(values);
+  const handlePriceChange = (prices) => {
+    if (onChange) {
+      onChange(prices);
+    }
   };
 
   return (
