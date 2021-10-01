@@ -1,15 +1,12 @@
 import {
   Box,
-  Button,
   Checkbox,
   FormControlLabel,
   makeStyles,
-  TextField,
   Typography,
 } from '@material-ui/core';
-import PriceFormat from 'components/custom-formats/PriceFormat';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
+import React from 'react';
 
 const useStyles = makeStyles((theme) => ({
   root: {
