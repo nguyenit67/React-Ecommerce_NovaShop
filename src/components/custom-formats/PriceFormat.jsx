@@ -21,6 +21,7 @@ const PriceFormat = React.forwardRef(function NumberFormatCustom(props, ref) {
       thousandSeparator="."
       decimalSeparator={false}
       isNumericString
+      allowNegative={false}
     />
   );
 });
