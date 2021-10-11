@@ -30,13 +30,13 @@ function ListPage(props) {
   const [productList, setProductList] = useState([]);
   const [pagination, setPagination] = useState({
     page: 1,
-    limit: 9,
+    limit: 12,
     total: 10,
   });
   const [loading, setLoading] = useState(true);
   const [filters, setFilters] = useState({
     _page: 1,
-    _limit: 9,
+    _limit: 12,
     _sort: 'salePrice:ASC',
   });
 
