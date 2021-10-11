@@ -45,8 +45,8 @@ function FilterByService({ filters = {}, onChange }) {
 
       <ul className={classes.list}>
         {[
+          { value: 'isFreeShip', label: 'Miễn Phí Vận Chuyển' },
           { value: 'isPromotion', label: 'Có khuyến mãi' },
-          { value: 'isFreeShip', label: 'Vận chuyển miễn phí' },
         ].map((service) => (
           <li key={service.value}>
             <FormControlLabel
