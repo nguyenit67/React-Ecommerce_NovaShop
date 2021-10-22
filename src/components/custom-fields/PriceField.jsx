@@ -1,4 +1,5 @@
 import { TextField } from '@material-ui/core';
+import PriceFormat from 'components/custom-formats/PriceFormat';
 
 function PriceField(props) {
   return (
@@ -7,6 +8,7 @@ function PriceField(props) {
       InputProps={{
         inputComponent: PriceFormat,
       }}
+      // variant="outlined"
     />
   );
 }
