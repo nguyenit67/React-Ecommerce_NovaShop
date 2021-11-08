@@ -1,5 +1,11 @@
-import { Box, Button, makeStyles, Typography } from '@material-ui/core';
-import PriceField from 'components/custom-fields/PriceField';
+import {
+  Box,
+  Button,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core';
+// import PriceField from 'components/custom-fields/PriceField';
 import PropTypes from 'prop-types';
 import React, { useState } from 'react';
 
@@ -55,14 +61,14 @@ function FilterByPrice({ onChange }) {
       <Typography variant="subtitle2">GIÁ</Typography>
 
       <Box className={classes.range}>
-        <PriceField
+        <TextField
           name="salePrice_gte"
           value={prices.salePrice_gte}
           onChange={handleChange}
           placeholder="Từ"
         />
         <span>-</span>
-        <PriceField
+        <TextField
           name="salePrice_lte"
           value={prices.salePrice_lte}
           onChange={handleChange}
