@@ -35,23 +35,30 @@ function PasswordField(props) {
       <Controller
         name={name}
         control={form.control}
-        as={OutlinedInput}
-        // below is OutlinedInput's props
-        id={name}
-        label={label}
-        type={showPassword ? 'text' : 'password'}
-        endAdornment={
-          <InputAdornment position="end">
-            <IconButton
-              aria-label="toggle password visibility"
-              onClick={toggleShowPassword}
-              edge="end"
-            >
-              {showPassword ? <Visibility /> : <VisibilityOff />}
-            </IconButton>
-          </InputAdornment>
-        }
-        disabled={disabled}
+        render={({ onChange, onBlur, value, name }) => (
+          <OutlinedInput
+            id={name}
+            type={showPassword ? 'text' : 'password'}
+            label={label}
+            endAdornment={
+              <InputAdornment position="end">
+                <IconButton
+                  aria-label="toggle password visibility"
+                  onClick={toggleShowPassword}
+                  edge="end"
+                >
+                  {showPassword ? <Visibility /> : <VisibilityOff />}
+                </IconButton>
+              </InputAdornment>
+            }
+            disabled={disabled}
+            // bind render props of Controller to this component
+            name={name}
+            value={value}
+            onChange={onChange}
+            onBlur={onBlur}
+          />
+        )}
       />
       {/* validation error mesage */}
       <FormHelperText>{errorMessage}</FormHelperText>

@@ -1,6 +1,5 @@
 import { TextField } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { Controller } from 'react-hook-form';
 import useErrorRHF from '../../../utils/useErrorRHF';
 
@@ -20,18 +19,25 @@ function InputField(props) {
     <Controller
       name={name}
       control={form.control}
-      as={TextField}
-      // below is TextField's props
-      margin="normal"
-      variant="outlined"
-      fullWidth
-      label={label}
-      disabled={disabled}
-      // validation error
-      error={hasError}
-      helperText={errorMessage}
-      // my custom bonus
-      // autoComplete="off"
+      render={({ onChange, onBlur, value, name }) => (
+        <TextField
+          margin="normal"
+          variant="outlined"
+          fullWidth
+          label={label}
+          disabled={disabled}
+          // validation error
+          error={hasError}
+          helperText={errorMessage}
+          // my custom bonus
+          // autoComplete="off"
+          // below are `renders props` assigned to TextField's props
+          name={name}
+          value={value}
+          onChange={onChange}
+          onBlur={onBlur}
+        />
+      )}
     />
   );
 }
