@@ -1,6 +1,6 @@
 import { yupResolver } from '@hookform/resolvers/yup';
 import { Button } from '@material-ui/core';
-import InputField from 'components/form-controls/InputField';
+import QuantityField from 'components/form-controls/QuantityField';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -14,9 +14,9 @@ function AddToCartForm({ onSubmit = null }) {
     quantity: yup
       .number()
       .required('Please enter quantity')
-      .typeError('Must be a number')
-      .positive('Please enter at least 1')
-      .integer('Quantity must be a valid number'),
+      .min(1, 'Minimum value is 1')
+      .integer('Quantity must be a valid number')
+      .typeError('Please enter a number'),
   });
 
   const form = useForm({
@@ -34,9 +34,15 @@ function AddToCartForm({ onSubmit = null }) {
 
   return (
     <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-      <InputField name="quantity" label="Quantity" form={form} />
+      <QuantityField name="quantity" label="Quantity" form={form} />
 
-      <Button type="submit" variant="contained" color="primary" size="large">
+      <Button
+        type="submit"
+        variant="contained"
+        color="primary"
+        size="large"
+        style={{ width: '250px' }}
+      >
         Add to cart
       </Button>
     </form>
