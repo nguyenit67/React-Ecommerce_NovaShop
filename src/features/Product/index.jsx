@@ -6,7 +6,7 @@ import DetailPage from './pages/DetailPage';
 
 function ProductFeature(props) {
   const match = useRouteMatch();
-  console.log('NLogging `match`', match);
+  // console.log('NLogging `match`', match);
 
   return (
     <Box pt={4}>
