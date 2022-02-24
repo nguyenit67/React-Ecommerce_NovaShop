@@ -24,3 +24,9 @@ MUlTI_TYPE_FILTER (my idea)
 - getLabel(filters) => string (tạo label)
 - type: Component (Component của filter đó)
 - onChange (khi filter con đó đổi trạng thái, trigger callback (props.onChange) nhận vào từ component cha)
+
+```
+DetailPage handleSubmit
+|__ AddToCartForm (validation + values management) (a.k.a form management)
+|   |__ QuantityField
+```
