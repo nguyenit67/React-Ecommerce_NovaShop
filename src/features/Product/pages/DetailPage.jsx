@@ -64,6 +64,7 @@ function DetailPage() {
             <Grid item className={classes.left}>
               <ProductThumbnail product={product} />
             </Grid>
+
             <Grid item className={classes.right}>
               <ProductInfo product={product} />
               <AddToCartForm onSubmit={handleAddToCartSubmit} />

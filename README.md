@@ -50,3 +50,19 @@ DetailPage handleSubmit
 |__ AddToCartForm (validation + values management) (a.k.a form management)
 |   |__ QuantityField
 ```
+
+DetailPage
+Click Add to Cart
+-> Open Mini Cart
+Go to Cart Page
+
+Feature: Cart (Giỏ Hàng)
+
+- showMiniCart: true / false
+- cartItems -> item (product, quantity, id:=productId)
+
+State derived from existing state `cartItems`
+
+- cartItemsCount
+- cartTotal
+  --> createSelector()
