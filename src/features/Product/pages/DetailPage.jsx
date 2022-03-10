@@ -1,4 +1,6 @@
 import { Box, Container, Grid, LinearProgress, makeStyles, Paper } from '@material-ui/core';
+import { addToCart } from 'features/Cart/cartSlice';
+import { useDispatch } from 'react-redux';
 import { Switch, useRouteMatch } from 'react-router-dom';
 import { Route } from 'react-router-dom/cjs/react-router-dom.min';
 import AddToCartForm from '../components/AddToCartForm';
@@ -39,6 +41,7 @@ function DetailPage() {
   const { productId } = match.params;
 
   const { product, loading } = useProductDetail(productId);
+  const dispatch = useDispatch();
 
   if (loading) {
     // TODO: Make this beautiful
@@ -52,8 +55,14 @@ function DetailPage() {
     );
   }
 
-  const handleAddToCartSubmit = (values) => {
-    console.log('Add to cart submit', values);
+  const handleAddToCartSubmit = ({ quantity }) => {
+    // console.log('Add to cart submit', formValues);
+    const action = addToCart({
+      id: product.id,
+      product,
+      quantity,
+    });
+    dispatch(action);
   };
 
   return (
