@@ -19,7 +19,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { AccountCircle, CardTravel, Close, ShoppingBasket, ShoppingCart } from '@material-ui/icons';
+import { AccountCircle, Close, ShoppingCart } from '@material-ui/icons';
 import CodeIcon from '@material-ui/icons/Code';
 import Login from 'features/Auth/components/Login';
 import Register from 'features/Auth/components/Register';
