@@ -1,6 +1,9 @@
 import Header from 'components/Header';
+import StorageKeys from 'constants/storage-keys';
 import CartFeature from 'features/Cart';
 import ProductFeature from 'features/Product';
+import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
 import { Redirect, Route, Switch } from 'react-router-dom';
 import './App.css';
 import NotFound from './components/NotFound';
@@ -9,6 +12,12 @@ import CounterFeature from './features/Counter';
 import TodoFeature from './features/Todo';
 
 function App() {
+  const cartItems = useSelector((state) => state.cart.cartItems);
+
+  useEffect(() => {
+    localStorage.setItem(StorageKeys.CART, JSON.stringify(cartItems));
+  }, [cartItems]);
+
   return (
     <div className="app">
       <Header />

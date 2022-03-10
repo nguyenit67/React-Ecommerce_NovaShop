@@ -1,14 +1,15 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { addToCart } from './cartSlice';
+import { useSelector } from 'react-redux';
+import { selectCartTotal } from './selectors';
 
 CartFeature.propTypes = {};
 
 function CartFeature(props) {
-  const action = addToCart();
-  console.log(action);
+  const cartTotal = useSelector(selectCartTotal);
 
-  return <div>Cart Feature</div>;
+  return <div>Total: {cartTotal}</div>;
 }
 
 export default CartFeature;

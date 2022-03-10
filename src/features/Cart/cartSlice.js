@@ -1,10 +1,11 @@
 import { createSlice } from '@reduxjs/toolkit';
+import StorageKeys from 'constants/storage-keys';
 
 const cartSlice = createSlice({
   name: 'cart',
   initialState: {
     showMiniCart: false,
-    cartItems: [],
+    cartItems: JSON.parse(localStorage.getItem(StorageKeys.CART)) || [],
   },
   reducers: {
     showMiniCart(state) {

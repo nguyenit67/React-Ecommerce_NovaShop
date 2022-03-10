@@ -7,6 +7,7 @@
 //   Toolbar,
 //   Typography,
 // } from '@material-ui/core';
+import { Badge } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -18,11 +19,12 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { AccountCircle, Close } from '@material-ui/icons';
+import { AccountCircle, CardTravel, Close, ShoppingBasket, ShoppingCart } from '@material-ui/icons';
 import CodeIcon from '@material-ui/icons/Code';
 import Login from 'features/Auth/components/Login';
 import Register from 'features/Auth/components/Register';
 import { logout } from 'features/Auth/userSlice';
+import { selectCartItemsCount } from 'features/Cart/selectors';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Link, NavLink } from 'react-router-dom';
@@ -59,6 +61,7 @@ export default function Header() {
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.current);
   const isLoggedIn = !!loggedInUser.id;
+  const cartItemsCount = useSelector(selectCartItemsCount);
 
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(MODES.LOGIN);
@@ -119,6 +122,14 @@ export default function Header() {
               Login
             </Button>
           )}
+
+          <Link className={classes.link} to="/cart">
+            <IconButton size="medium" color="inherit">
+              <Badge badgeContent={cartItemsCount} color="error">
+                <ShoppingCart />
+              </Badge>
+            </IconButton>
+          </Link>
 
           {isLoggedIn && (
             <IconButton color="inherit" onClick={handleUserClickOpenMenu}>
