@@ -1,15 +1,25 @@
-import { Box, Button, Divider, Paper, Typography } from '@material-ui/core';
+import { Box, Button, Divider, Paper, Typography, makeStyles } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { formatPrice } from 'utils';
 import { selectCartTotal } from '../selectors';
+// import { makeStyles } from '@material-ui/core';
 
 CartCheckout.propTypes = {};
 
+// usestyle
+const useStyles = makeStyles((theme) => ({
+  root: {},
+  submit: {
+    marginTop: theme.spacing(3),
+  },
+}));
+
 function CartCheckout(props) {
+  const classes = useStyles();
   const cartTotal = useSelector(selectCartTotal);
 
   return (
-    <Box>
+    <Box className={classes.root}>
       <Paper>
         <Box p={1} display="flex" justifyContent="space-between">
           <Typography variant="body2">Tạm Tính</Typography>
@@ -22,7 +32,14 @@ function CartCheckout(props) {
         </Box>
       </Paper>
 
-      <Button type="submit" variant="contained" color="primary" fullWidth size="large">
+      <Button
+        className={classes.submit}
+        type="submit"
+        variant="contained"
+        color="primary"
+        fullWidth
+        size="large"
+      >
         THANH TOÁN
       </Button>
     </Box>

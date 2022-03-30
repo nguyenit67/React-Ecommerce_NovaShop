@@ -19,7 +19,7 @@ function CartFeature(props) {
           <Box component="span">({cartItemsCount} sản phẩm)</Box>
         </Typography>
 
-        <Grid container>
+        <Grid container spacing={2}>
           <Grid item md={8}>
             <CartList data={cartItems} />
           </Grid>

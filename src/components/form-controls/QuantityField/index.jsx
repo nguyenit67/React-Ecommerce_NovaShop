@@ -40,6 +40,9 @@ const useStyles = makeStyles((theme) => ({
       width: 50,
     },
   },
+  button: {
+    fontSize: '16px',
+  },
 }));
 
 function QuantityField(props) {
@@ -58,6 +61,7 @@ function QuantityField(props) {
         render={({ onChange, onBlur, value, name }) => (
           <Box className={classes.box}>
             <Button
+              className={classes.button}
               variant="outlined"
               size="small"
               onClick={() => {
@@ -72,7 +76,7 @@ function QuantityField(props) {
               variant="outlined"
               size="small"
               id={name}
-              type="number"
+              // type="number"
               disabled={disabled}
               // bind render props of Controller to this component
               name={name}
@@ -86,6 +90,7 @@ function QuantityField(props) {
             />
 
             <Button
+              className={classes.button}
               variant="outlined"
               size="small"
               onClick={() => setValue(name, numberParsePositiveInt(value, 0) + 1)}
