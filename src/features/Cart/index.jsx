@@ -1,15 +1,36 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { addToCart } from './cartSlice';
+import { Box, Container, Grid, Paper, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
-import { selectCartTotal } from './selectors';
+import CartCheckout from './components/CartCheckout';
+import CartList from './components/CartList';
+import { selectCartItemsCount, selectCartTotal } from './selectors';
 
 CartFeature.propTypes = {};
 
 function CartFeature(props) {
-  const cartTotal = useSelector(selectCartTotal);
+  const cartItems = useSelector((state) => state.cart.cartItems);
+  const cartItemsCount = useSelector(selectCartItemsCount);
+  // const cartTotal = useSelector(selectCartTotal);
 
-  return <div>Total: {cartTotal}</div>;
+  return (
+    <Box pt={4}>
+      <Container>
+        <Typography component="h6">
+          GIỎ HÀNG
+          <Box component="span">({cartItemsCount} sản phẩm)</Box>
+        </Typography>
+
+        <Grid container>
+          <Grid item md={8}>
+            <CartList data={cartItems} />
+          </Grid>
+
+          <Grid item md={4}>
+            <CartCheckout />
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
+  );
 }
 
 export default CartFeature;

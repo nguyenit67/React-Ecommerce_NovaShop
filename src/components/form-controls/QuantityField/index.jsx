@@ -1,4 +1,12 @@
-import { Box, FormHelperText, IconButton, makeStyles, Typography } from '@material-ui/core';
+import {
+  Box,
+  Button,
+  FormHelperText,
+  IconButton,
+  makeStyles,
+  TextField,
+  Typography,
+} from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { AddCircleOutline, RemoveCircleOutline } from '@material-ui/icons';
@@ -20,8 +28,17 @@ const useStyles = makeStyles((theme) => ({
   box: {
     display: 'flex',
     flexFlow: 'row nowrap',
-    alignItems: 'center',
+    alignItems: 'stretch',
     maxWidth: '200px',
+
+    '& .MuiInputBase-root': {
+      borderRadius: 0,
+    },
+
+    '& .MuiButton-root': {
+      borderRadius: 0,
+      width: 50,
+    },
   },
 }));
 
@@ -40,18 +57,20 @@ function QuantityField(props) {
         control={form.control}
         render={({ onChange, onBlur, value, name }) => (
           <Box className={classes.box}>
-            <IconButton
+            <Button
+              variant="outlined"
+              size="small"
               onClick={() => {
                 const parsedValue = numberParsePositiveInt(value);
-                if (parsedValue >= 2) {
-                  setValue(name, parsedValue - 1);
-                }
+                setValue(name, parsedValue >= 2 ? parsedValue - 1 : 1);
               }}
             >
-              <RemoveCircleOutline />
-            </IconButton>
+              -
+            </Button>
 
-            <OutlinedInput
+            <TextField
+              variant="outlined"
+              size="small"
               id={name}
               type="number"
               disabled={disabled}
@@ -59,12 +78,20 @@ function QuantityField(props) {
               name={name}
               value={value}
               onChange={onChange}
-              onBlur={onBlur}
+              onBlur={() => {
+                const parsedValue = numberParsePositiveInt(value);
+                setValue(name, parsedValue > 0 ? parsedValue : 1);
+                onBlur();
+              }}
             />
 
-            <IconButton onClick={() => setValue(name, numberParsePositiveInt(value, 0) + 1)}>
-              <AddCircleOutline />
-            </IconButton>
+            <Button
+              variant="outlined"
+              size="small"
+              onClick={() => setValue(name, numberParsePositiveInt(value, 0) + 1)}
+            >
+              +
+            </Button>
           </Box>
         )}
       />
