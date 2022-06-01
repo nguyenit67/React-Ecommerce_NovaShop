@@ -1,10 +1,8 @@
-import { Box, Button, Divider, Paper, Typography, makeStyles } from '@material-ui/core';
+import { Box, Button, Divider, makeStyles, Paper, Typography } from '@material-ui/core';
 import { useSelector } from 'react-redux';
 import { formatPrice } from 'utils';
 import { selectCartTotal } from '../selectors';
 // import { makeStyles } from '@material-ui/core';
-
-CartCheckout.propTypes = {};
 
 // usestyle
 const useStyles = makeStyles((theme) => ({
@@ -14,7 +12,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function CartCheckout(props) {
+function CartCheckout() {
   const classes = useStyles();
   const cartTotal = useSelector(selectCartTotal);
 

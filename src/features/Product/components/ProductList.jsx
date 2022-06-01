@@ -1,6 +1,5 @@
 import { Box, Grid } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React from 'react';
 import Product from './Product';
 
 ProductList.propTypes = {
@@ -13,6 +12,7 @@ ProductList.defaultProps = {
 
 function ProductList({ data }) {
   return (
+    // @ts-ignore
     <Box>
       <Grid container>
         {data.map((product) => (

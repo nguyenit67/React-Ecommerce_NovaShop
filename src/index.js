@@ -7,19 +7,21 @@ import App from './App';
 import store from './app/store';
 import './index.css';
 
+const rootElement = document.getElementById('root');
+// const root = createRoot(rootElement);
+// root.render();
+
 ReactDOM.render(
   <React.StrictMode>
     <Provider store={store}>
       <BrowserRouter>
-        <SnackbarProvider
-          anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
-        >
+        <SnackbarProvider anchorOrigin={{ vertical: 'top', horizontal: 'right' }}>
           <App />
         </SnackbarProvider>
       </BrowserRouter>
     </Provider>
   </React.StrictMode>,
-  document.getElementById('root')
+  rootElement
 );
 
 // If you want to start measuring performance in your app, pass a function

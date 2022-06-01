@@ -1,13 +1,4 @@
-// import {
-//   AppBar,
-//   Button,
-//   Dialog,
-//   DialogActions,
-//   DialogContent,
-//   Toolbar,
-//   Typography,
-// } from '@material-ui/core';
-import { Badge } from '@material-ui/core';
+import { Badge, Container } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -19,8 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { AccountCircle, Close, ShoppingCart } from '@material-ui/icons';
-import CodeIcon from '@material-ui/icons/Code';
+import { AccountCircle, Close, ShoppingCart, Whatshot } from '@material-ui/icons';
 import Login from 'features/Auth/components/Login';
 import Register from 'features/Auth/components/Register';
 import { logout } from 'features/Auth/userSlice';
@@ -34,7 +24,7 @@ const useStyles = makeStyles((theme) => ({
     flexGrow: 1,
   },
   menuButton: {
-    marginRight: theme.spacing(2),
+    marginRight: theme.spacing(1),
   },
   title: {
     flexGrow: 1,
@@ -96,48 +86,46 @@ export default function Header() {
 
   return (
     <div className={classes.root}>
-      <AppBar position="static">
-        <Toolbar>
-          <CodeIcon className={classes.menuButton} />
-          <Typography variant="h6" className={classes.title}>
-            <Link className={classes.link} to="/">
-              EZ SHOP
+      <AppBar position="fixed">
+        <Container>
+          <Toolbar disableGutters>
+            {/* <CodeIcon className={classes.menuButton} /> */}
+            <Whatshot className={classes.menuButton} />
+
+            <Typography variant="h6" className={classes.title}>
+              <Link className={classes.link} to="/">
+                NOVA SHOP
+              </Link>
+            </Typography>
+
+            <NavLink className={classes.link} to="/products">
+              <Button color="inherit">Products</Button>
+            </NavLink>
+
+            {!isLoggedIn && (
+              <Button color="inherit" onClick={handleClickOpen}>
+                Login
+              </Button>
+            )}
+
+            <Link className={classes.link} to="/cart">
+              <IconButton size="medium" color="inherit">
+                <Badge badgeContent={cartItemsCount} color="error">
+                  <ShoppingCart />
+                </Badge>
+              </IconButton>
             </Link>
-          </Typography>
 
-          <NavLink className={classes.link} to="/products">
-            <Button color="inherit">Products</Button>
-          </NavLink>
-
-          <NavLink className={classes.link} to="/todos">
-            <Button color="inherit">Todos</Button>
-          </NavLink>
-
-          <NavLink className={classes.link} to="/albums">
-            <Button color="inherit">Albums</Button>
-          </NavLink>
-
-          {!isLoggedIn && (
-            <Button color="inherit" onClick={handleClickOpen}>
-              Login
-            </Button>
-          )}
-
-          <Link className={classes.link} to="/cart">
-            <IconButton size="medium" color="inherit">
-              <Badge badgeContent={cartItemsCount} color="error">
-                <ShoppingCart />
-              </Badge>
-            </IconButton>
-          </Link>
-
-          {isLoggedIn && (
-            <IconButton color="inherit" onClick={handleUserClickOpenMenu}>
-              <AccountCircle />
-            </IconButton>
-          )}
-        </Toolbar>
+            {isLoggedIn && (
+              <IconButton color="inherit" onClick={handleUserClickOpenMenu}>
+                <AccountCircle />
+              </IconButton>
+            )}
+          </Toolbar>
+        </Container>
       </AppBar>
+      {/* this ⬇ for fixed AppBar doesn't hide page content */}
+      <Toolbar />
 
       {isLoggedIn && (
         <Menu

@@ -1,7 +1,6 @@
-import { Box, Typography } from '@material-ui/core';
+import { Box, makeStyles, Typography } from '@material-ui/core';
 import { STATIC_HOST, THUMBNAIL_PLACEHOLDER } from 'constants/index';
 import PropTypes from 'prop-types';
-import React from 'react';
 import { useHistory } from 'react-router-dom';
 import { formatPrice } from 'utils';
 
@@ -9,7 +8,27 @@ Product.propTypes = {
   product: PropTypes.object,
 };
 
+const useStyles = makeStyles((theme) => ({
+  root: {
+    cursor: 'pointer',
+    // transition: 'all 0.3s',
+
+    '&:hover': {
+      boxShadow: '0px 0px 10px rgba(0, 0, 0, 0.2)',
+
+      '& img': {
+        // transform: 'scale(1.1)',
+        opacity: 0.9,
+      },
+    },
+  },
+  // thumbnail: {
+  //   transition: 'all 0.3s ease-in-out',
+  // },
+}));
+
 function Product({ product }) {
+  const classes = useStyles();
   const history = useHistory();
   const thumbnailUrl = product.thumbnail
     ? `${STATIC_HOST}${product.thumbnail?.url}`
@@ -21,8 +40,8 @@ function Product({ product }) {
   };
 
   return (
-    <Box padding={1} onClick={handleClick}>
-      <Box padding={1} minHeight="215px">
+    <Box padding={2} onClick={handleClick} className={classes.root}>
+      <Box minHeight="215px">
         <img src={thumbnailUrl} alt={product.name} width="100%" />
       </Box>
 

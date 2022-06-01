@@ -129,25 +129,15 @@ function ListPage(props) {
         <Grid container spacing={1}>
           <Grid item className={classes.left}>
             <Paper elevation={0}>
-              <ProductFilters
-                filters={queryParams}
-                onChange={handleFiltersChange}
-              />
+              <ProductFilters filters={queryParams} onChange={handleFiltersChange} />
             </Paper>
           </Grid>
           <Grid item className={classes.right}>
-            <Paper elevation={0}>
-              <ProductSort
-                currentSort={queryParams._sort}
-                onChange={handleSortChange}
-              />
+            <Paper elevation={0} component={Box} paddingY={2}>
+              <ProductSort currentSort={queryParams._sort} onChange={handleSortChange} />
               <FilterViewer filters={queryParams} onChange={setNewFilters} />
 
-              {loading ? (
-                <ProductSkeletonList length={9} />
-              ) : (
-                <ProductList data={productList} />
-              )}
+              {loading ? <ProductSkeletonList length={9} /> : <ProductList data={productList} />}
               <Box className={classes.pagination}>
                 <Pagination
                   color="primary"
