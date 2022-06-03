@@ -5,5 +5,8 @@ export default createTheme({
     primary: {
       main: '#ff523b',
     },
+    secondary: {
+      main: '#7c4dff',
+    },
   },
 });

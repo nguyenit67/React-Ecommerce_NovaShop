@@ -34,14 +34,13 @@ const MyTab = withStyles((theme) => ({
   },
 }))((props) => <Tab disableRipple {...props} />);
 
-function ProductSort({ currentSort, onChange }) {
+export default function ProductSort({ currentSort, onChange }) {
   const handleSortChange = (_event, newValue) => {
     onChange?.(newValue);
   };
 
   return (
-    // @ts-ignore
-    <Box display="flex" alignItems="center" fontWeight="400" paddingLeft={2}>
+    <Box display="flex" alignItems="center" fontWeight="400" paddingLeft="16px">
       {/* <Box component="span" marginLeft="16px" marginRight="4px">
         Sắp xếp theo:
       </Box> */}
@@ -60,5 +59,3 @@ function ProductSort({ currentSort, onChange }) {
     </Box>
   );
 }
-
-export default ProductSort;

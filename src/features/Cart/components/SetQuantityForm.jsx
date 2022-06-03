@@ -1,5 +1,4 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@material-ui/core';
 import QuantityField from 'components/form-controls/QuantityField';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
@@ -35,6 +34,7 @@ function SetQuantityForm({ onSubmit = null, value: initialQuantity }) {
   const quantity = form.watch('quantity');
   useEffect(() => {
     submitCallback();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [quantity]);
 
   return (

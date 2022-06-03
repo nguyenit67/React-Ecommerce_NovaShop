@@ -29,9 +29,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function ListPage(props) {
+export default function ListPage() {
   const classes = useStyles();
-
   const history = useHistory();
   const location = useLocation();
   const queryParams = useMemo(() => {
@@ -42,7 +41,7 @@ function ListPage(props) {
       ...params,
       _page: Number.parseInt(params._page) || 1,
       _limit: Number.parseInt(params._limit) || 12,
-      _sort: params._sort || 'salePrice:ASC',
+      _sort: params._sort || 'updated_at:DESC',
       isFreeShip: params.isFreeShip === 'true',
       isPromotion: params.isPromotion === 'true',
     };
@@ -71,7 +70,7 @@ function ListPage(props) {
     })();
   }, [queryParams]);
 
-  const handlePaginationChange = (e, page) => {
+  const handlePaginationChange = (_evt, page) => {
     // filters updated from UI
     const filters = {
       ...queryParams,
@@ -133,7 +132,7 @@ function ListPage(props) {
             </Paper>
           </Grid>
           <Grid item className={classes.right}>
-            <Paper elevation={0} component={Box} paddingY={2}>
+            <Paper elevation={0} component={Box}>
               <ProductSort currentSort={queryParams._sort} onChange={handleSortChange} />
               <FilterViewer filters={queryParams} onChange={setNewFilters} />
 
@@ -155,5 +154,3 @@ function ListPage(props) {
     </Box>
   );
 }
-
-export default ListPage;

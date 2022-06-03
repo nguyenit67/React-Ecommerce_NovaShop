@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     flex: '1 1 0',
     padding: theme.spacing(1.5),
   },
+  addCart: {
+    width: 151,
+  },
   loading: {
     position: 'fixed',
     top: 0,
@@ -77,28 +80,31 @@ function DetailPage() {
 
             <Grid item className={classes.right}>
               <ProductInfo product={product} />
-              <AddToCartForm onSubmit={handleAddToCartSubmit} />
+              <Box className={classes.addCart}>
+                <AddToCartForm onSubmit={handleAddToCartSubmit} />
+              </Box>
             </Grid>
           </Grid>
         </Paper>
 
-        <ProductMenu />
+        <Box maxWidth={'calc(100% - 300px)'}>
+          <ProductMenu />
+          <Paper elevation={0} style={{ padding: '30px' }}>
+            <Switch>
+              <Route exact path={match.url}>
+                <ProductDescription product={product} />
+              </Route>
 
-        <Paper elevation={0} style={{ padding: '30px' }}>
-          <Switch>
-            <Route exact path={match.url}>
-              <ProductDescription product={product} />
-            </Route>
+              <Route exact path={`${match.url}/additional`}>
+                <ProductAdditional product={product} />
+              </Route>
 
-            <Route exact path={`${match.url}/additional`}>
-              <ProductAdditional product={product} />
-            </Route>
-
-            <Route exact path={`${match.url}/reviews`}>
-              <ProductReviews product={product} />
-            </Route>
-          </Switch>
-        </Paper>
+              <Route exact path={`${match.url}/reviews`}>
+                <ProductReviews product={product} />
+              </Route>
+            </Switch>
+          </Paper>
+        </Box>
       </Container>
     </Box>
   );

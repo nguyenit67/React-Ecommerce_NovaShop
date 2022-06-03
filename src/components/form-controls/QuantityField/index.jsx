@@ -1,19 +1,24 @@
+// @ts-ignore
 import {
   Box,
   Button,
   FormHelperText,
-  IconButton,
   makeStyles,
   TextField,
   Typography,
+  withStyles,
 } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
-import OutlinedInput from '@material-ui/core/OutlinedInput';
-import { AddCircleOutline, RemoveCircleOutline } from '@material-ui/icons';
+import { Add, Remove } from '@material-ui/icons';
+import { MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from 'constants/index';
 import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
-import { numberParsePositiveInt } from 'utils';
-import useErrorRHF from '../../../utils/useErrorRHF';
+import { numberParsePositiveInt, productQuantityClamp } from 'utils';
+import { getErrorMessageRHF } from 'utils';
+
+/**
+ * @typedef {import('@material-ui/core').ButtonProps} ButtonProps
+ */
 
 QuantityField.propTypes = {
   form: PropTypes.object.isRequired,
@@ -25,31 +30,53 @@ QuantityField.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {},
-  box: {
+  inputGroup: {
     display: 'flex',
     flexFlow: 'row nowrap',
     alignItems: 'stretch',
+    minWidth: '135px',
     maxWidth: '200px',
 
     '& .MuiInputBase-root': {
       borderRadius: 0,
     },
-
-    '& .MuiButton-root': {
-      borderRadius: 0,
-      width: 50,
-    },
   },
-  button: {
-    fontSize: '16px',
+  left: {
+    borderRadius: '50px 0 0 50px !important',
+  },
+  right: {
+    borderRadius: '0 50px 50px 0 !important',
+  },
+  input: {
+    textAlign: 'center',
   },
 }));
 
-function QuantityField(props) {
+const AdjustButton = withStyles({
+  root: {
+    borderRadius: 0,
+    minWidth: 40,
+    '& .MuiSvgIcon-root': {
+      fontSize: 14,
+    },
+  },
+})((/** @type {ButtonProps} */ props) => <Button variant="outlined" size="small" {...props} />);
+
+export default function QuantityField(props) {
   const classes = useStyles();
   const { form, name, label, disabled } = props;
   const { setValue } = form;
-  const { hasError, errorMessage } = useErrorRHF(form, name);
+  const { hasError, errorMessage } = getErrorMessageRHF(form, name);
+
+  const addQuantity = (value, add) => {
+    const newValue = numberParsePositiveInt(value) + add;
+    form.setValue(name, newValue);
+  };
+
+  const updateValueOnBlur = (value) => {
+    const parsedValue = numberParsePositiveInt(value);
+    setValue(name, productQuantityClamp(parsedValue));
+  };
 
   return (
     <FormControl error={hasError} fullWidth margin="normal" variant="outlined" size="small">
@@ -59,44 +86,40 @@ function QuantityField(props) {
         name={name}
         control={form.control}
         render={({ onChange, onBlur, value, name }) => (
-          <Box className={classes.box}>
-            <Button
-              className={classes.button}
-              variant="outlined"
-              size="small"
-              onClick={() => {
-                const parsedValue = numberParsePositiveInt(value);
-                setValue(name, parsedValue >= 2 ? parsedValue - 1 : 1);
-              }}
+          <Box className={classes.inputGroup}>
+            <AdjustButton
+              className={classes.left}
+              disabled={disabled || value <= MIN_PRODUCT_QUANTITY}
+              onClick={() => addQuantity(value, -1)}
             >
-              -
-            </Button>
+              <Remove />
+            </AdjustButton>
 
             <TextField
               variant="outlined"
               size="small"
               id={name}
-              // type="number"
-              disabled={disabled}
-              // bind render props of Controller to this component
-              name={name}
-              value={value}
-              onChange={onChange}
-              onBlur={() => {
-                const parsedValue = numberParsePositiveInt(value);
-                setValue(name, parsedValue > 0 ? parsedValue : 1);
-                onBlur();
+              type="number"
+              InputProps={{
+                classes: {
+                  input: classes.input,
+                },
               }}
+              disabled={disabled}
+              // bind render props of Controller
+              name={name}
+              value={productQuantityClamp(value)}
+              onChange={onChange}
+              onBlur={() => updateValueOnBlur(value)}
             />
 
-            <Button
-              className={classes.button}
-              variant="outlined"
-              size="small"
-              onClick={() => setValue(name, numberParsePositiveInt(value, 0) + 1)}
+            <AdjustButton
+              className={classes.right}
+              disabled={disabled || value >= MAX_PRODUCT_QUANTITY}
+              onClick={() => addQuantity(value, +1)}
             >
-              +
-            </Button>
+              <Add />
+            </AdjustButton>
           </Box>
         )}
       />
@@ -105,5 +128,3 @@ function QuantityField(props) {
     </FormControl>
   );
 }
-
-export default QuantityField;

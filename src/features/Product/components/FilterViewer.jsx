@@ -1,6 +1,7 @@
-import { Box, Chip, makeStyles } from '@material-ui/core';
+import { Box, Chip } from '@material-ui/core';
+import { makeStyles } from '@material-ui/core/styles';
 import PropTypes from 'prop-types';
-import React, { useMemo } from 'react';
+import { useMemo } from 'react';
 import { formatPriceShort } from 'utils/unitFormatters';
 
 const useStyles = makeStyles((theme) => ({
@@ -10,12 +11,19 @@ const useStyles = makeStyles((theme) => ({
     alignItems: 'center',
 
     padding: 0,
-    margin: theme.spacing(2, 0),
+    margin: theme.spacing(1.5, 0, 0.5, 1),
     listStyleType: 'none',
 
     '& > li': {
       margin: 0,
       padding: theme.spacing(1),
+    },
+    '& .MuiChip-root': {
+      height: '28px',
+
+      '&:not(.is-active) .MuiChip-label': {
+        opacity: 0.9,
+      },
     },
   },
 }));
@@ -62,8 +70,7 @@ const FILTER_LIST = [
         filters.salePrice_lte
       )}`,
     isActive: () => true,
-    isVisible: (filters) =>
-      filters.salePrice_gte != null && filters.salePrice_lte != null,
+    isVisible: (filters) => filters.salePrice_gte != null && filters.salePrice_lte != null,
     isRemovable: true,
     onRemove: (filters) => {
       const newFilters = { ...filters };
@@ -98,40 +105,46 @@ FilterViewer.propTypes = {
 function FilterViewer({ filters = {}, onChange = null }) {
   const classes = useStyles();
 
-  const visibleFilterList = useMemo(() => {
-    return FILTER_LIST.filter((x) => x.isVisible(filters));
-  }, [filters]);
+  const visibleFilterList = useMemo(
+    () => FILTER_LIST.filter((x) => x.isVisible(filters)),
+    [filters]
+  );
 
   return (
     <Box component="ul" className={classes.root}>
-      {visibleFilterList.map((x) => (
-        <li key={x.id}>
-          <Chip
-            label={x.getLabel(filters)}
-            color={x.isActive(filters) ? 'primary' : 'default'}
-            onClick={
-              x.isRemovable
-                ? null
-                : () => {
-                    if (!onChange) return;
+      {visibleFilterList.map((x) => {
+        const isFilterActive = x.isActive(filters);
+        return (
+          <li key={x.id}>
+            <Chip
+              label={x.getLabel(filters)}
+              className={isFilterActive ? 'is-active' : ''}
+              variant={isFilterActive ? 'default' : 'outlined'}
+              color={isFilterActive ? 'secondary' : 'default'}
+              onClick={
+                x.isRemovable
+                  ? null
+                  : () => {
+                      if (!onChange) return;
 
-                    const newFilters = x.onToggle(filters);
-                    onChange(newFilters);
-                  }
-            }
-            onDelete={
-              x.isRemovable
-                ? () => {
-                    if (!onChange) return;
+                      const newFilters = x.onToggle(filters);
+                      onChange(newFilters);
+                    }
+              }
+              onDelete={
+                x.isRemovable
+                  ? () => {
+                      if (!onChange) return;
 
-                    const newFilters = x.onRemove(filters);
-                    onChange(newFilters);
-                  }
-                : null
-            }
-          />
-        </li>
-      ))}
+                      const newFilters = x.onRemove(filters);
+                      onChange(newFilters);
+                    }
+                  : null
+              }
+            />
+          </li>
+        );
+      })}
     </Box>
   );
 }

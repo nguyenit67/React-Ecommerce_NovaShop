@@ -1,5 +1,5 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { Button } from '@material-ui/core';
+import { Box, Button, Typography } from '@material-ui/core';
 import QuantityField from 'components/form-controls/QuantityField';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
@@ -34,17 +34,23 @@ function AddToCartForm({ onSubmit = null }) {
 
   return (
     <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-      <QuantityField name="quantity" label="Quantity" form={form} />
+      <Box paddingY={2}>
+        <Typography>Số Lượng</Typography>
 
-      <Button
-        type="submit"
-        variant="contained"
-        color="primary"
-        size="large"
-        style={{ width: '250px' }}
-      >
-        Add to cart
-      </Button>
+        <Box>
+          <QuantityField name="quantity" form={form} />
+        </Box>
+
+        <Button
+          type="submit"
+          variant="contained"
+          color="secondary"
+          size="large"
+          style={{ width: '250px' }}
+        >
+          Chọn Mua
+        </Button>
+      </Box>
     </form>
   );
 }

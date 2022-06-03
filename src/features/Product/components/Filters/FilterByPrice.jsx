@@ -1,39 +1,40 @@
-import {
-  Box,
-  Button,
-  makeStyles,
-  TextField,
-  Typography,
-} from '@material-ui/core';
-// import PriceField from 'components/custom-fields/PriceField';
+import { Box, Button, makeStyles, TextField, Typography, withStyles } from '@material-ui/core';
 import PropTypes from 'prop-types';
-import React, { useState } from 'react';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    padding: theme.spacing(2),
-    borderTop: `1px solid ${theme.palette.grey[300]}`,
-  },
-  range: {
-    display: 'flex',
-    flexFlow: 'row nowrap',
-    alignItems: 'center',
-
-    marginTop: theme.spacing(1),
-    marginBottom: theme.spacing(1),
-
-    '& > span': {
-      marginLeft: theme.spacing(1),
-      marginRight: theme.spacing(1),
-    },
-  },
-}));
+import { useState } from 'react';
 
 FilterByPrice.propTypes = {
   onChange: PropTypes.func,
 };
 
-function FilterByPrice({ onChange }) {
+const useStyles = makeStyles((theme) => ({
+  root: {
+    padding: theme.spacing(2),
+    borderTop: `1px solid ${theme.palette.grey[300]}`,
+
+    '& .MuiInputBase-input': {
+      padding: '0.5rem',
+    },
+  },
+  range: {
+    display: 'flex',
+    flexFlow: 'row nowrap',
+    alignItems: 'center',
+    marginTop: theme.spacing(1),
+    marginBottom: theme.spacing(1),
+  },
+  rangeLine: {
+    height: '1px',
+    width: '15px',
+    margin: '0 5px',
+    backgroundColor: theme.palette.grey[700],
+  },
+}));
+
+const StyledTextField = withStyles({})((props) => (
+  <TextField variant="outlined" color="secondary" {...props} />
+));
+
+export default function FilterByPrice({ onChange }) {
   const classes = useStyles();
   const [prices, setPrices] = useState({
     salePrice_gte: null,
@@ -61,14 +62,14 @@ function FilterByPrice({ onChange }) {
       <Typography variant="subtitle2">GIÁ</Typography>
 
       <Box className={classes.range}>
-        <TextField
+        <StyledTextField
           name="salePrice_gte"
           value={prices.salePrice_gte}
           onChange={handleChange}
           placeholder="Từ"
         />
-        <span>-</span>
-        <TextField
+        <Box component="div" className={classes.rangeLine} />
+        <StyledTextField
           name="salePrice_lte"
           value={prices.salePrice_lte}
           onChange={handleChange}
@@ -76,17 +77,9 @@ function FilterByPrice({ onChange }) {
         />
       </Box>
 
-      <Button
-        fullWidth
-        variant="outlined"
-        color="primary"
-        size="small"
-        onClick={handleSubmit}
-      >
+      <Button fullWidth variant="outlined" color="primary" size="small" onClick={handleSubmit}>
         Áp dụng
       </Button>
     </Box>
   );
 }
-
-export default FilterByPrice;

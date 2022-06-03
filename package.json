@@ -1,6 +1,6 @@
 {
-  "name": "Nlearn-reactjs",
-  "version": "0.1.0",
+  "name": "NovaShop-reactjs",
+  "version": "0.2.0",
   "private": true,
   "scripts": {
     "start": "react-scripts start",
@@ -15,9 +15,7 @@
     "@material-ui/core": "^4.12.3",
     "@material-ui/icons": "^4.11.2",
     "@material-ui/lab": "^4.0.0-alpha.60",
-    "@mui/icons-material": "^5.8.0",
-    "@mui/material": "^5.8.1",
-    "@reduxjs/toolkit": "^1.6.1",
+    "@reduxjs/toolkit": "^1.8.2",
     "@testing-library/jest-dom": "^5.14.1",
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",

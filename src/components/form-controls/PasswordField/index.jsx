@@ -1,27 +1,26 @@
-import { FormHelperText } from '@material-ui/core';
+import { Button, FormHelperText } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
-import IconButton from '@material-ui/core/IconButton';
 import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
-import Visibility from '@material-ui/icons/Visibility';
-import VisibilityOff from '@material-ui/icons/VisibilityOff';
+import { ErrorSharp } from '@material-ui/icons';
+import { useUserFormFieldStyles } from 'components/styles';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
-import useErrorRHF from '../../../utils/useErrorRHF';
+import { getErrorMessageRHF } from 'utils';
 
 PasswordField.propTypes = {
   form: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
-
   label: PropTypes.string,
   disabled: PropTypes.bool,
 };
 
-function PasswordField(props) {
+export default function PasswordField(props) {
+  const classes = useUserFormFieldStyles();
   const { form, name, label, disabled } = props;
-  const { hasError, errorMessage } = useErrorRHF(form, name);
+  const { hasError, errorMessage } = getErrorMessageRHF(form, name);
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -30,7 +29,14 @@ function PasswordField(props) {
   };
 
   return (
-    <FormControl fullWidth margin="normal" variant="outlined" error={hasError}>
+    <FormControl
+      className={classes.root}
+      fullWidth
+      margin="normal"
+      variant="outlined"
+      color="secondary"
+      error={hasError}
+    >
       <InputLabel htmlFor={name}>{label}</InputLabel>
       <Controller
         name={name}
@@ -42,13 +48,17 @@ function PasswordField(props) {
             label={label}
             endAdornment={
               <InputAdornment position="end">
-                <IconButton
+                <Button
                   aria-label="toggle password visibility"
                   onClick={toggleShowPassword}
-                  edge="end"
+                  color="secondary"
+                  // edge="end"
                 >
-                  {showPassword ? <Visibility /> : <VisibilityOff />}
-                </IconButton>
+                  {/* {showPassword ? <VisibilityOffTwoTone /> : <VisibilityTwoTone />} */}
+                  {/* {showPassword ? <VisibilityOffOutlined /> : <VisibilityOutlined />} */}
+                  {/* <Typography color="secondary"></Typography> */}
+                  {showPassword ? 'ẨN' : 'HIỆN'}
+                </Button>
               </InputAdornment>
             }
             disabled={disabled}
@@ -60,10 +70,15 @@ function PasswordField(props) {
           />
         )}
       />
-      {/* validation error mesage */}
-      <FormHelperText>{errorMessage}</FormHelperText>
+      {/* validation error message */}
+      <FormHelperText>
+        {hasError && (
+          <>
+            <ErrorSharp />
+            {` ${errorMessage}`}
+          </>
+        )}
+      </FormHelperText>
     </FormControl>
   );
 }
-
-export default PasswordField;

@@ -1,10 +1,4 @@
-import {
-  Box,
-  Checkbox,
-  FormControlLabel,
-  makeStyles,
-  Typography,
-} from '@material-ui/core';
+import { Box, Checkbox, FormControlLabel, makeStyles, Typography } from '@material-ui/core';
 import PropTypes from 'prop-types';
 import React from 'react';
 
@@ -29,7 +23,7 @@ FilterByService.propTypes = {
   onChange: PropTypes.func,
 };
 
-function FilterByService({ filters = {}, onChange }) {
+export default function FilterByService({ filters = {}, onChange }) {
   const classes = useStyles();
 
   const handleChange = (event) => {
@@ -55,7 +49,7 @@ function FilterByService({ filters = {}, onChange }) {
                   checked={Boolean(filters[service.value])}
                   onChange={handleChange}
                   name={service.value}
-                  color="primary"
+                  color="secondary"
                 />
               }
               label={service.label}
@@ -66,5 +60,3 @@ function FilterByService({ filters = {}, onChange }) {
     </Box>
   );
 }
-
-export default FilterByService;

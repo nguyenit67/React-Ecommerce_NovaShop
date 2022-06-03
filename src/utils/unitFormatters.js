@@ -1,7 +1,4 @@
-export function formatCurrencyWithoutSign(
-  number = 0,
-  { locale = 'vi-VN', currency = 'VND' } = {}
-) {
+export function formatCurrencyWithoutSign(number = 0, { locale = 'vi-VN', currency = 'VND' } = {}) {
   return new Intl.NumberFormat(locale, {
     style: 'currency',
     currency: currency,
@@ -39,17 +36,11 @@ export function formatCurrency(
   }
 }
 
-export function formatPrice(
-  number = 0,
-  { locale = 'vi-VN', currency = 'VND' } = {}
-) {
+export function formatPrice(number = 0, { locale = 'vi-VN', currency = 'VND' } = {}) {
   return formatCurrency(number, { locale, currency });
 }
 
-export function formatPriceShort(
-  number = 0,
-  { locale = 'vi-VN', currency = 'VND' } = {}
-) {
+export function formatPriceShort(number = 0, { locale = 'vi-VN', currency = 'VND' } = {}) {
   return formatCurrency(number, {
     locale,
     currency,

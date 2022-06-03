@@ -1,4 +1,4 @@
-import { Badge, Container } from '@material-ui/core';
+import { Badge, Container, Grid } from '@material-ui/core';
 import AppBar from '@material-ui/core/AppBar';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -17,7 +17,7 @@ import { logout } from 'features/Auth/userSlice';
 import { selectCartItemsCount } from 'features/Cart/selectors';
 import { useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Link, NavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -33,6 +33,7 @@ const useStyles = makeStyles((theme) => ({
     color: '#fff',
     textDecoration: 'none',
   },
+  signInButton: {},
   closeButton: {
     position: 'absolute',
     top: theme.spacing(1),
@@ -48,6 +49,7 @@ const MODES = {
 };
 
 export default function Header() {
+  const classes = useStyles();
   const dispatch = useDispatch();
   const loggedInUser = useSelector((state) => state.user.current);
   const isLoggedIn = !!loggedInUser.id;
@@ -55,7 +57,6 @@ export default function Header() {
 
   const [open, setOpen] = useState(false);
   const [mode, setMode] = useState(MODES.LOGIN);
-
   const [anchorEl, setAnchorEl] = useState(null);
 
   // handle Dialog open & close
@@ -82,45 +83,54 @@ export default function Header() {
     handleCloseMenu();
   };
 
-  const classes = useStyles();
-
   return (
     <div className={classes.root}>
-      <AppBar position="fixed">
+      <AppBar position="fixed" elevation={0}>
         <Container>
           <Toolbar disableGutters>
-            {/* <CodeIcon className={classes.menuButton} /> */}
-            <Whatshot className={classes.menuButton} />
+            <Grid item container xs={3} direction="row" alignItems="flex-start">
+              <Whatshot className={classes.menuButton} />
+              <Typography variant="h6" className={classes.title}>
+                <Link className={classes.link} to="/">
+                  NOVA SHOP
+                </Link>
+              </Typography>
+            </Grid>
 
-            <Typography variant="h6" className={classes.title}>
-              <Link className={classes.link} to="/">
-                NOVA SHOP
+            <Grid item xs></Grid>
+
+            <Grid
+              item
+              container
+              xs={3}
+              justifyContent="flex-end"
+              direction="row"
+              alignItems="center"
+            >
+              {isLoggedIn !== true && (
+                <Button
+                  variant="contained"
+                  color="secondary"
+                  className={classes.signInButton}
+                  onClick={handleClickOpen}
+                >
+                  ĐĂNG NHẬP
+                </Button>
+              )}
+
+              <Link className={classes.link} to="/cart">
+                <IconButton size="medium" color="inherit">
+                  <Badge badgeContent={cartItemsCount} color="secondary">
+                    <ShoppingCart />
+                  </Badge>
+                </IconButton>
               </Link>
-            </Typography>
-
-            <NavLink className={classes.link} to="/products">
-              <Button color="inherit">Products</Button>
-            </NavLink>
-
-            {!isLoggedIn && (
-              <Button color="inherit" onClick={handleClickOpen}>
-                Login
-              </Button>
-            )}
-
-            <Link className={classes.link} to="/cart">
-              <IconButton size="medium" color="inherit">
-                <Badge badgeContent={cartItemsCount} color="error">
-                  <ShoppingCart />
-                </Badge>
-              </IconButton>
-            </Link>
-
-            {isLoggedIn && (
-              <IconButton color="inherit" onClick={handleUserClickOpenMenu}>
-                <AccountCircle />
-              </IconButton>
-            )}
+              {isLoggedIn && (
+                <IconButton color="inherit" onClick={handleUserClickOpenMenu}>
+                  <AccountCircle />
+                </IconButton>
+              )}
+            </Grid>
           </Toolbar>
         </Container>
       </AppBar>
@@ -165,8 +175,8 @@ export default function Header() {
               <Register closeDialog={handleClose} />
 
               <Box textAlign="center">
-                <Button color="primary" onClick={() => setMode(MODES.LOGIN)}>
-                  Already have an account? Login here.
+                <Button color="secondary" onClick={() => setMode(MODES.LOGIN)}>
+                  Have an account? Login here.
                 </Button>
               </Box>
             </>
@@ -177,7 +187,7 @@ export default function Header() {
               <Login closeDialog={handleClose} />
 
               <Box textAlign="center">
-                <Button color="primary" onClick={() => setMode(MODES.REGISTER)}>
+                <Button color="secondary" onClick={() => setMode(MODES.REGISTER)}>
                   Don't have an account? Register here.
                 </Button>
               </Box>

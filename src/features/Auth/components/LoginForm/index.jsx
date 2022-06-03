@@ -1,54 +1,22 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-// import {
-//   Avatar,
-//   Button,
-//   LinearProgress,
-//   makeStyles,
-//   Typography,
-// } from '@material-ui/core';
 import Avatar from '@material-ui/core/Avatar';
 import Button from '@material-ui/core/Button';
-import { makeStyles } from '@material-ui/core/styles';
-import Typography from '@material-ui/core/Typography';
 import LinearProgress from '@material-ui/core/LinearProgress';
-
+import Typography from '@material-ui/core/Typography';
 import LockOutlined from '@material-ui/icons/LockOutlined';
 import InputField from 'components/form-controls/InputField';
 import PasswordField from 'components/form-controls/PasswordField';
+import { useAccountFormStyles } from 'components/styles';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
-
-const useStyles = makeStyles((theme) => ({
-  root: {
-    position: 'relative',
-    paddingTop: theme.spacing(4),
-  },
-  avatar: {
-    margin: '0 auto',
-    backgroundColor: theme.palette.secondary.main,
-  },
-  title: {
-    margin: theme.spacing(2, 0, 3, 0),
-    textAlign: 'center',
-  },
-  submit: {
-    margin: theme.spacing(2, 0, 2, 0),
-  },
-  progress: {
-    position: 'absolute',
-    top: theme.spacing(1),
-    left: 0,
-    right: 0,
-  },
-}));
 
 LoginForm.propTypes = {
   onSubmit: PropTypes.func,
 };
 
 function LoginForm({ onSubmit }) {
-  const classes = useStyles();
+  const classes = useAccountFormStyles();
 
   const schema = yup.object().shape({
     identifier: yup
@@ -85,12 +53,12 @@ function LoginForm({ onSubmit }) {
       </Avatar>
 
       <Typography className={classes.title} component="h3" variant="h5">
-        Sign In
+        Đăng Nhập
       </Typography>
 
       <form onSubmit={form.handleSubmit(handleFormSubmit)}>
         <InputField name="identifier" label="Email" form={form} />
-        <PasswordField name="password" label="Password" form={form} />
+        <PasswordField name="password" label="Mật khẩu" form={form} />
 
         <Button
           type="submit"
@@ -101,7 +69,7 @@ function LoginForm({ onSubmit }) {
           size="large"
           disabled={isSubmitting}
         >
-          Sign in
+          Đăng nhập
         </Button>
       </form>
     </div>

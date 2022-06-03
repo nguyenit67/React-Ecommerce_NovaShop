@@ -1,16 +1,5 @@
-import {
-  Box,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogContentText,
-  DialogTitle,
-  IconButton,
-  makeStyles,
-  Paper,
-  Typography,
-} from '@material-ui/core';
-import { Delete } from '@material-ui/icons';
+import { Box, Grid, IconButton, makeStyles, Paper, Typography } from '@material-ui/core';
+import DeleteOutlineOutlinedIcon from '@material-ui/icons/DeleteOutlineOutlined';
 import ConfirmDialog from 'components/dialogs/ConfirmDialog';
 import { STATIC_HOST, THUMBNAIL_PLACEHOLDER } from 'constants/index';
 import PropTypes from 'prop-types';
@@ -20,7 +9,6 @@ import { Link } from 'react-router-dom';
 import { formatPrice } from 'utils';
 import { removeFromCart, setQuantity } from '../cartSlice';
 import SetQuantityForm from './SetQuantityForm';
-import WarningIcon from '@material-ui/icons/Warning';
 
 CartItem.propTypes = {
   item: PropTypes.object.isRequired,
@@ -28,29 +16,48 @@ CartItem.propTypes = {
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'space-between',
     border: '1px solid #e0e0e0',
     borderRadius: '5px',
-
-    gap: 2,
+    padding: theme.spacing(1),
   },
 
   thumbnail: {
-    padding: theme.spacing(1.5),
-
     width: '7%',
-    maxWidth: 80,
+    maxWidth: 160,
+    minWidth: 80,
   },
-  quantity: {
-    justifySelf: 'end',
+  productInfo: {
+    position: 'relative',
+    top: 10,
+    paddingLeft: 10,
+    fontSize: 18,
+
+    '& a': {
+      color: theme.palette.text.primary,
+      lineHeight: '20px',
+
+      '&:hover': {
+        color: theme.palette.primary.main,
+      },
+    },
   },
-  productTotal: {},
+  price: {
+    fontWeight: 500,
+  },
+  originPrice: {
+    textDecoration: 'line-through',
+    opacity: 0.9,
+    marginLeft: 10,
+    fontSize: 12.5,
+  },
+  quantity: {},
+  productTotal: {
+    paddingLeft: '2rem',
+  },
   remove: {},
 }));
 
-function CartItem({ item }) {
+export default function CartItem({ item }) {
   const classes = useStyles();
   const dispatch = useDispatch();
   const { id, product, quantity } = item;
@@ -64,7 +71,6 @@ function CartItem({ item }) {
   const productTotal = product.salePrice * quantity;
 
   const handleSetQuantitySubmit = ({ quantity }) => {
-    // console.log('CartItem handleSetQuantitySubmit', values);
     const newQuantity = quantity;
     dispatch(setQuantity({ id, quantity: newQuantity }));
   };
@@ -79,34 +85,44 @@ function CartItem({ item }) {
 
   return (
     <div>
-      <Box className={classes.root} component={Paper} elevation={0} padding={1}>
-        <Box className={classes.thumbnail} component={Link} to={productDetailUrl}>
-          <img src={thumbnailUrl} alt={product.name} width="100%" />
-        </Box>
+      <Paper elevation={0} className={classes.root}>
+        <Grid container alignItems="center">
+          <Grid item container xs={4}>
+            <Link to={productDetailUrl} className={classes.thumbnail}>
+              <img src={thumbnailUrl} alt={product.name} width="100%" />
+            </Link>
 
-        <Box>
-          <Typography component={Link} to={productDetailUrl} variant="body2">
-            {product.name}
-          </Typography>
-          <Typography variant="body2">
-            <Box component="span" fontSize="16px" fontWeight="bold" mr={1}>
-              {formatPrice(product.salePrice)}
+            <Box className={classes.productInfo}>
+              <Link to={productDetailUrl}>{product.name}</Link>
             </Box>
-          </Typography>
-        </Box>
+          </Grid>
 
-        <Box className={classes.quantity}>
-          <SetQuantityForm value={quantity} onSubmit={handleSetQuantitySubmit} />
-        </Box>
+          <Grid item container xs={3} alignItems="center">
+            <Typography variant="body2" className={classes.price}>
+              {formatPrice(product.salePrice)}
+            </Typography>
+            <Typography variant="body2" className={classes.originPrice}>
+              {formatPrice(product.originalPrice)}
+            </Typography>
+          </Grid>
 
-        <Box className={classes.productTotal}>
-          <Typography variant="body1">{formatPrice(productTotal)}</Typography>
-        </Box>
+          <Grid item xs={2} className={classes.quantity}>
+            <SetQuantityForm value={quantity} onSubmit={handleSetQuantitySubmit} />
+          </Grid>
 
-        <IconButton className={classes.remove} onClick={handleRemoveClick}>
-          <Delete />
-        </IconButton>
-      </Box>
+          <Grid item xs={2} className={classes.productTotal}>
+            <Typography variant="body1" color="primary">
+              {formatPrice(productTotal)}
+            </Typography>
+          </Grid>
+
+          <Grid item xs={1} className={classes.remove}>
+            <IconButton onClick={handleRemoveClick}>
+              <DeleteOutlineOutlinedIcon />
+            </IconButton>
+          </Grid>
+        </Grid>
+      </Paper>
 
       <ConfirmDialog
         open={openRemoveConfirm}
@@ -119,5 +135,3 @@ function CartItem({ item }) {
     </div>
   );
 }
-
-export default CartItem;
