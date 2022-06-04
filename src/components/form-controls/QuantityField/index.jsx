@@ -4,7 +4,7 @@ import {
   Button,
   FormHelperText,
   makeStyles,
-  TextField,
+  OutlinedInput,
   Typography,
   withStyles,
 } from '@material-ui/core';
@@ -12,9 +12,9 @@ import FormControl from '@material-ui/core/FormControl';
 import { Add, Remove } from '@material-ui/icons';
 import { MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from 'constants/index';
 import PropTypes from 'prop-types';
+import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
-import { numberParsePositiveInt, productQuantityClamp } from 'utils';
-import { getErrorMessageRHF } from 'utils';
+import { getErrorMessageRHF, numberParsePositiveInt, productQuantityClamp } from 'utils';
 
 /**
  * @typedef {import('@material-ui/core').ButtonProps} ButtonProps
@@ -23,9 +23,9 @@ import { getErrorMessageRHF } from 'utils';
 QuantityField.propTypes = {
   form: PropTypes.object.isRequired,
   name: PropTypes.string.isRequired,
-
   label: PropTypes.string,
   disabled: PropTypes.bool,
+  submitCallback: PropTypes.func,
 };
 
 const useStyles = makeStyles((theme) => ({
@@ -65,17 +65,22 @@ const AdjustButton = withStyles({
 export default function QuantityField(props) {
   const classes = useStyles();
   const { form, name, label, disabled } = props;
-  const { setValue } = form;
   const { hasError, errorMessage } = getErrorMessageRHF(form, name);
+
+  // const fieldValueSnapshot = form.watch(name);
+  // useEffect(() => {
+  //   props?.submitCallback();
+  // }, [fieldValueSnapshot]);
 
   const addQuantity = (value, add) => {
     const newValue = numberParsePositiveInt(value) + add;
     form.setValue(name, newValue);
+    props?.submitCallback();
   };
 
-  const updateValueOnBlur = (value) => {
+  const updateValueOnBlur = (name, value) => {
     const parsedValue = numberParsePositiveInt(value);
-    setValue(name, productQuantityClamp(parsedValue));
+    form.setValue(name, parsedValue);
   };
 
   return (
@@ -85,43 +90,47 @@ export default function QuantityField(props) {
       <Controller
         name={name}
         control={form.control}
-        render={({ onChange, onBlur, value, name }) => (
-          <Box className={classes.inputGroup}>
-            <AdjustButton
-              className={classes.left}
-              disabled={disabled || value <= MIN_PRODUCT_QUANTITY}
-              onClick={() => addQuantity(value, -1)}
-            >
-              <Remove />
-            </AdjustButton>
+        render={({ onChange, onBlur, value, name }) => {
+          console.log('Update field', name, value);
 
-            <TextField
-              variant="outlined"
-              size="small"
-              id={name}
-              type="number"
-              InputProps={{
-                classes: {
+          return (
+            <Box className={classes.inputGroup}>
+              <AdjustButton
+                className={classes.left}
+                disabled={disabled || value <= MIN_PRODUCT_QUANTITY}
+                onClick={() => addQuantity(value, -1)}
+              >
+                <Remove />
+              </AdjustButton>
+
+              <OutlinedInput
+                color="secondary"
+                classes={{
                   input: classes.input,
-                },
-              }}
-              disabled={disabled}
-              // bind render props of Controller
-              name={name}
-              value={productQuantityClamp(value)}
-              onChange={onChange}
-              onBlur={() => updateValueOnBlur(value)}
-            />
+                }}
+                id={name}
+                type="number"
+                disabled={disabled}
+                // bind render props of Controller
+                value={productQuantityClamp(value)}
+                onChange={onChange}
+                onBlur={(e) => {
+                  const parsedValue = numberParsePositiveInt(e.target.value);
+                  updateValueOnBlur(name, parsedValue);
+                  // onBlur();
+                }}
+              />
 
-            <AdjustButton
-              className={classes.right}
-              disabled={disabled || value >= MAX_PRODUCT_QUANTITY}
-              onClick={() => addQuantity(value, +1)}
-            >
-              <Add />
-            </AdjustButton>
-          </Box>
-        )}
+              <AdjustButton
+                className={classes.right}
+                disabled={disabled || value >= MAX_PRODUCT_QUANTITY}
+                onClick={() => addQuantity(value, +1)}
+              >
+                <Add />
+              </AdjustButton>
+            </Box>
+          );
+        }}
       />
       {/* validation error message */}
       <FormHelperText>{errorMessage}</FormHelperText>

@@ -1,5 +1,6 @@
 import { Box, Chip } from '@material-ui/core';
 import { makeStyles } from '@material-ui/core/styles';
+import LocalShippingTwoTone from '@material-ui/icons/LocalShippingTwoTone';
 import PropTypes from 'prop-types';
 import { useMemo } from 'react';
 import { formatPriceShort } from 'utils/unitFormatters';
@@ -47,6 +48,7 @@ const FILTER_LIST = [
 
       return newFilters;
     },
+    icon: <LocalShippingTwoTone />,
   },
   {
     // Khuyến mãi
@@ -117,6 +119,7 @@ function FilterViewer({ filters = {}, onChange = null }) {
         return (
           <li key={x.id}>
             <Chip
+              icon={x.icon}
               label={x.getLabel(filters)}
               className={isFilterActive ? 'is-active' : ''}
               variant={isFilterActive ? 'default' : 'outlined'}

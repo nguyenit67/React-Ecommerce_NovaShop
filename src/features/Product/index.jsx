@@ -8,7 +8,7 @@ function ProductFeature() {
 
   return (
     // @ts-ignore
-    <Box pt={4}>
+    <Box pt={2.5}>
       <Switch>
         <Route path={match.path} exact component={ListPage} />
         <Route path={`${match.path}/:productId`} component={DetailPage} />

@@ -1,5 +1,5 @@
 import { TextField } from '@material-ui/core';
-import PriceFormat from 'components/custom-formats/PriceFormat';
+import PriceFormat from './PriceFormat';
 
 function PriceField(props) {
   return (

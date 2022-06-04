@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Controller } from 'react-hook-form';
 import { getErrorMessageRHF } from 'utils';
 import ErrorSharp from '@material-ui/icons/ErrorSharp';
-import { useUserFormFieldStyles } from 'components/styles';
+import { useAuthFormFieldStyles } from 'components/styles';
 
 InputField.propTypes = {
   form: PropTypes.object.isRequired,
@@ -13,7 +13,7 @@ InputField.propTypes = {
 };
 
 export default function InputField({ form, name, label, disabled }) {
-  const classes = useUserFormFieldStyles();
+  const classes = useAuthFormFieldStyles();
   const { hasError, errorMessage } = getErrorMessageRHF(form, name);
 
   return (

@@ -1,6 +1,6 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-export const useUserFormFieldStyles = makeStyles((theme) => ({
+export const useAuthFormFieldStyles = makeStyles((theme) => ({
   root: {
     // '&, & .MuiOutlinedInput-root, & .MuiOutlinedInput-input': {   borderRadius: 2, },
     '& .MuiFormHelperText-root.Mui-error': {
@@ -28,7 +28,7 @@ export const useUserFormFieldStyles = makeStyles((theme) => ({
   },
 }));
 
-export const useAccountFormStyles = makeStyles((theme) => ({
+export const useAuthFormStyles = makeStyles((theme) => ({
   root: {
     position: 'relative',
     paddingTop: theme.spacing(4),

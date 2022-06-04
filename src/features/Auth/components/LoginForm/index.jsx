@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import LockOutlined from '@material-ui/icons/LockOutlined';
 import InputField from 'components/form-controls/InputField';
 import PasswordField from 'components/form-controls/PasswordField';
-import { useAccountFormStyles } from 'components/styles';
+import { useAuthFormStyles } from 'components/styles';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -16,7 +16,7 @@ LoginForm.propTypes = {
 };
 
 function LoginForm({ onSubmit }) {
-  const classes = useAccountFormStyles();
+  const classes = useAuthFormStyles();
 
   const schema = yup.object().shape({
     identifier: yup

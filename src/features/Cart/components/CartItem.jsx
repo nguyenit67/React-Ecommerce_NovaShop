@@ -8,7 +8,7 @@ import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
 import { formatPrice } from 'utils';
 import { removeFromCart, setQuantity } from '../cartSlice';
-import SetQuantityForm from './SetQuantityForm';
+import CartQuantityForm from './CartQuantityForm';
 
 CartItem.propTypes = {
   item: PropTypes.object.isRequired,
@@ -107,7 +107,7 @@ export default function CartItem({ item }) {
           </Grid>
 
           <Grid item xs={2} className={classes.quantity}>
-            <SetQuantityForm value={quantity} onSubmit={handleSetQuantitySubmit} />
+            <CartQuantityForm value={quantity} onSubmit={handleSetQuantitySubmit} />
           </Grid>
 
           <Grid item xs={2} className={classes.productTotal}>

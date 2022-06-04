@@ -6,7 +6,7 @@ import Typography from '@material-ui/core/Typography';
 import LockOutlined from '@material-ui/icons/LockOutlined';
 import InputField from 'components/form-controls/InputField';
 import PasswordField from 'components/form-controls/PasswordField';
-import { useAccountFormStyles } from 'components/styles';
+import { useAuthFormStyles } from 'components/styles';
 import PropTypes from 'prop-types';
 import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
@@ -16,14 +16,14 @@ RegisterForm.propTypes = {
 };
 
 function RegisterForm({ onSubmit }) {
-  const classes = useAccountFormStyles();
+  const classes = useAuthFormStyles();
 
   const schema = yup.object().shape({
     fullName: yup
       .string()
       .trim()
       .required('Please enter your full name')
-      .test('should have at least two words', 'Please enter at least two words', (value) => {
+      .test('has-2-words-or-more', 'Please enter at least two words', (value) => {
         console.log('fullName', value);
         return value.split(/\s+/).length >= 2;
       }),

@@ -2,6 +2,10 @@ import { Box, Button, makeStyles, TextField, Typography, withStyles } from '@mat
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 
+/**
+ * @typedef {import('@material-ui/core').TextFieldProps} TextFieldProps
+ */
+
 FilterByPrice.propTypes = {
   onChange: PropTypes.func,
 };
@@ -30,7 +34,7 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const StyledTextField = withStyles({})((props) => (
+const StyledTextField = withStyles({})((/** @type {TextFieldProps} */ props) => (
   <TextField variant="outlined" color="secondary" {...props} />
 ));
 

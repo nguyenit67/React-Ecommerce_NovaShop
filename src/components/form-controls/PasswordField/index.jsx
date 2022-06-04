@@ -4,7 +4,7 @@ import InputAdornment from '@material-ui/core/InputAdornment';
 import InputLabel from '@material-ui/core/InputLabel';
 import OutlinedInput from '@material-ui/core/OutlinedInput';
 import { ErrorSharp } from '@material-ui/icons';
-import { useUserFormFieldStyles } from 'components/styles';
+import { useAuthFormFieldStyles } from 'components/styles';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { Controller } from 'react-hook-form';
@@ -18,7 +18,7 @@ PasswordField.propTypes = {
 };
 
 export default function PasswordField(props) {
-  const classes = useUserFormFieldStyles();
+  const classes = useAuthFormFieldStyles();
   const { form, name, label, disabled } = props;
   const { hasError, errorMessage } = getErrorMessageRHF(form, name);
 

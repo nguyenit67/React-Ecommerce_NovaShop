@@ -11,6 +11,7 @@ import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { AccountCircle, Close, ShoppingCart, Whatshot } from '@material-ui/icons';
+import SearchBar from 'components/SearchBar';
 import Login from 'features/Auth/components/Login';
 import Register from 'features/Auth/components/Register';
 import { logout } from 'features/Auth/userSlice';
@@ -97,7 +98,9 @@ export default function Header() {
               </Typography>
             </Grid>
 
-            <Grid item xs></Grid>
+            <Grid item xs>
+              <SearchBar />
+            </Grid>
 
             <Grid
               item
