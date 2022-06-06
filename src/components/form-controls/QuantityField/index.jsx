@@ -1,13 +1,5 @@
 // @ts-ignore
-import {
-  Box,
-  Button,
-  FormHelperText,
-  makeStyles,
-  OutlinedInput,
-  Typography,
-  withStyles,
-} from '@material-ui/core';
+import { Box, Button, makeStyles, OutlinedInput, Typography, withStyles } from '@material-ui/core';
 import FormControl from '@material-ui/core/FormControl';
 import { Add, Remove } from '@material-ui/icons';
 import { MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from 'constants/index';
@@ -64,7 +56,7 @@ const AdjustButton = withStyles({
 export default function QuantityField(props) {
   const classes = useStyles();
   const { form, name, label, disabled } = props;
-  const { hasError, errorMessage: _errorMessage } = getErrorMessageRHF(form, name);
+  const { hasError /* , errorMessage */ } = getErrorMessageRHF(form, name);
 
   // const fieldValueSnapshot = form.watch(name);
   // useEffect(() => {
