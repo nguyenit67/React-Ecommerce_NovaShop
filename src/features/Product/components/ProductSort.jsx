@@ -25,7 +25,7 @@ const MyTab = withStyles((theme) => ({
     padding: theme.spacing(1),
     borderTop: '2px solid transparent',
     borderBottom: '2px solid transparent',
-    transition: 'all 0.3s',
+    transition: 'all 0.2s ease-out',
 
     '&:hover': {
       color: theme.palette.primary.main,

@@ -1,16 +1,17 @@
 import { yupResolver } from '@hookform/resolvers/yup';
-import { alpha, darken, withStyles } from '@material-ui/core/styles';
+import { InputBase } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Grid from '@material-ui/core/Grid';
-import TextField from '@material-ui/core/TextField';
+import { withStyles } from '@material-ui/core/styles';
 import SearchIcon from '@material-ui/icons/Search';
 import PropTypes from 'prop-types';
-import { useForm } from 'react-hook-form';
-import { object, string } from 'yup';
-import { Box, Input, InputBase } from '@material-ui/core';
+import { Controller, useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
 /**
  * @typedef {import('@material-ui/core').ButtonProps} ButtonProps
+ * @typedef {import('@material-ui/core').InputBaseProps} InputBaseProps
+ *
  */
 
 SearchForm.propTypes = {
@@ -20,31 +21,32 @@ SearchForm.propTypes = {
 const SearchInput = withStyles((theme) => ({
   root: {
     flex: 1,
-    color: '#fff',
-    backgroundColor: 'rgba(255, 255, 255, 0.15)',
+    backgroundColor: theme.palette.background.default,
     borderRadius: '4px 0 0 4px',
 
     '& .MuiInputBase-input': {
       padding: theme.spacing(1, 1, 1, 2),
     },
   },
-}))((props) => <InputBase placeholder="Tìm kiếm sản phẩm" {...props} />);
+}))((/** @type {InputBaseProps} */ props) => <InputBase aria-label="search" {...props} />);
 
 const SearchSubmit = withStyles((theme) => ({
   root: {
     width: '80px',
     height: '100%',
-    color: '#fff',
     padding: theme.spacing(1),
-    backgroundColor: alpha(theme.palette.common.black, 0.15),
+    // backgroundColor: alpha(theme.palette.common.black, 0.15),
+    color: theme.palette.primary.contrastText,
+    backgroundColor: theme.palette.secondary.main,
     borderRadius: '0 4px 4px 0',
-    borderColor: '#fff',
+
     '&, &:hover, &:focus': {
       boxShadow: 'none',
     },
 
     '&:hover': {
-      backgroundColor: alpha(theme.palette.common.black, 0.25),
+      // backgroundColor: alpha(theme.palette.common.black, 0.25),
+      backgroundColor: theme.palette.secondary.dark,
     },
   },
 }))((/** @type {ButtonProps} */ props) => (
@@ -54,8 +56,8 @@ const SearchSubmit = withStyles((theme) => ({
 ));
 
 export default function SearchForm({ onSubmit }) {
-  const formSchema = object().shape({
-    search: string().trim().required(),
+  const formSchema = yup.object().shape({
+    search: yup.string().trim().required(),
   });
   const form = useForm({
     resolver: yupResolver(formSchema),
@@ -65,18 +67,39 @@ export default function SearchForm({ onSubmit }) {
   });
 
   const handleFormSubmit = async (values) => {
-    await onSubmit?.(values);
+    if (onSubmit) {
+      await onSubmit(values);
+    }
   };
 
   return (
-    <div>
-      <form onSubmit={form.handleSubmit(handleFormSubmit)}>
-        <Grid container alignItems="center">
-          <SearchInput />
+    <form onSubmit={form.handleSubmit(handleFormSubmit)}>
+      <Grid container alignItems="stretch">
+        <SearchField name="search" form={form} placeholder="Search" />
 
-          <SearchSubmit />
-        </Grid>
-      </form>
-    </div>
+        <SearchSubmit />
+      </Grid>
+    </form>
+  );
+}
+
+function SearchField(props) {
+  const { form, name, placeholder, disabled } = props;
+  return (
+    <Controller
+      name={name}
+      control={form.control}
+      render={({ onChange, onBlur, value, name }) => (
+        <SearchInput
+          // autoComplete="off"
+          placeholder={placeholder}
+          onChange={onChange}
+          onBlur={onBlur}
+          value={value}
+          name={name}
+          disabled={disabled}
+        />
+      )}
+    />
   );
 }

@@ -1,0 +1,10 @@
+html,
+body,
+.app {
+  height: 100%;
+}
+
+#root,
+#__next {
+  isolation: isolate;
+}

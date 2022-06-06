@@ -10,7 +10,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import { makeStyles } from '@material-ui/core/styles';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
-import { AccountCircle, Close, ShoppingCart, Whatshot } from '@material-ui/icons';
+import { AccountCircle, Close, LocalMall, Whatshot } from '@material-ui/icons';
 import SearchBar from 'components/SearchBar';
 import Login from 'features/Auth/components/Login';
 import Register from 'features/Auth/components/Register';
@@ -21,18 +21,22 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 
 const useStyles = makeStyles((theme) => ({
-  root: {
-    flexGrow: 1,
-  },
-  menuButton: {
+  root: {},
+  logo: {
+    position: 'relative',
+    top: '-4px',
     marginRight: theme.spacing(1),
   },
   title: {
     flexGrow: 1,
   },
   link: {
-    color: '#fff',
+    color: theme.palette.primary.contrastText,
     textDecoration: 'none',
+  },
+  cartButton: {},
+  cartIcon: {
+    fontSize: 28,
   },
   signInButton: {},
   closeButton: {
@@ -89,13 +93,21 @@ export default function Header() {
       <AppBar position="fixed" elevation={0}>
         <Container>
           <Toolbar disableGutters>
-            <Grid item container xs={3} direction="row" alignItems="flex-start">
-              <Whatshot className={classes.menuButton} />
-              <Typography variant="h6" className={classes.title}>
-                <Link className={classes.link} to="/">
+            <Grid item xs={3}>
+              <Box
+                display="flex"
+                flexDirection="row"
+                alignItems="center"
+                width="fit-content"
+                className={classes.link}
+                component={Link}
+                to="/"
+              >
+                <Whatshot className={classes.logo} />
+                <Typography variant="h6" className={classes.title}>
                   NOVA SHOP
-                </Link>
-              </Typography>
+                </Typography>
+              </Box>
             </Grid>
 
             <Grid item xs>
@@ -112,6 +124,7 @@ export default function Header() {
             >
               {isLoggedIn !== true && (
                 <Button
+                  // size="small"
                   variant="contained"
                   color="secondary"
                   className={classes.signInButton}
@@ -123,8 +136,8 @@ export default function Header() {
 
               <Link className={classes.link} to="/cart">
                 <IconButton size="medium" color="inherit">
-                  <Badge badgeContent={cartItemsCount} color="secondary">
-                    <ShoppingCart />
+                  <Badge badgeContent={cartItemsCount} color="secondary" overlap="circular">
+                    <LocalMall className={classes.cartIcon} />
                   </Badge>
                 </IconButton>
               </Link>

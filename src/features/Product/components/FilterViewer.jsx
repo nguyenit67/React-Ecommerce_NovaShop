@@ -11,9 +11,8 @@ const useStyles = makeStyles((theme) => ({
     flexFlow: 'row nowrap',
     alignItems: 'center',
 
-    padding: 0,
-    margin: theme.spacing(1.5, 0, 0.5, 1),
-    listStyleType: 'none',
+    margin: 0,
+    padding: theme.spacing(1.5, 0, 0.5, 1),
 
     '& > li': {
       margin: 0,

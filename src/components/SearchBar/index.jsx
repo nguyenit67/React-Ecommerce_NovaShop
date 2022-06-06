@@ -1,9 +1,22 @@
+import { useHistory } from 'react-router-dom';
+import queryString from 'query-string';
 import SearchForm from './SearchForm';
 
 export default function SearchBar() {
+  const history = useHistory();
+
   const handleSearchFormSubmit = (values) => {
-    console.log(values);
+    const { search } = values;
+
+    history.push({
+      pathname: '/products',
+      search: queryString.stringify(search ? { name_contains: search } : {}),
+    });
   };
 
-  return <SearchForm onSubmit={handleSearchFormSubmit} />;
+  return (
+    <div className="search-bar">
+      <SearchForm onSubmit={handleSearchFormSubmit} />
+    </div>
+  );
 }

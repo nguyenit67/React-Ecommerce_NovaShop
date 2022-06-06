@@ -12,7 +12,6 @@ import FormControl from '@material-ui/core/FormControl';
 import { Add, Remove } from '@material-ui/icons';
 import { MAX_PRODUCT_QUANTITY, MIN_PRODUCT_QUANTITY } from 'constants/index';
 import PropTypes from 'prop-types';
-import { useEffect } from 'react';
 import { Controller } from 'react-hook-form';
 import { getErrorMessageRHF, numberParsePositiveInt, productQuantityClamp } from 'utils';
 
@@ -65,7 +64,7 @@ const AdjustButton = withStyles({
 export default function QuantityField(props) {
   const classes = useStyles();
   const { form, name, label, disabled } = props;
-  const { hasError, errorMessage } = getErrorMessageRHF(form, name);
+  const { hasError, errorMessage: _errorMessage } = getErrorMessageRHF(form, name);
 
   // const fieldValueSnapshot = form.watch(name);
   // useEffect(() => {
@@ -79,8 +78,8 @@ export default function QuantityField(props) {
   };
 
   const updateValueOnBlur = (name, value) => {
-    const parsedValue = numberParsePositiveInt(value);
-    form.setValue(name, parsedValue);
+    const parsedValue = numberParsePositiveInt(value, 1);
+    form.setValue(name, productQuantityClamp(parsedValue));
   };
 
   return (
@@ -92,6 +91,9 @@ export default function QuantityField(props) {
         control={form.control}
         render={({ onChange, onBlur, value, name }) => {
           console.log('Update field', name, value);
+
+          const parsedValue = numberParsePositiveInt(value, 1);
+          console.log('Parsed value', productQuantityClamp(parsedValue));
 
           return (
             <Box className={classes.inputGroup}>
@@ -112,13 +114,9 @@ export default function QuantityField(props) {
                 type="number"
                 disabled={disabled}
                 // bind render props of Controller
-                value={productQuantityClamp(value)}
+                value={productQuantityClamp(parsedValue)}
                 onChange={onChange}
-                onBlur={(e) => {
-                  const parsedValue = numberParsePositiveInt(e.target.value);
-                  updateValueOnBlur(name, parsedValue);
-                  // onBlur();
-                }}
+                onBlur={(e) => updateValueOnBlur(name, e.target.value)}
               />
 
               <AdjustButton
@@ -132,8 +130,8 @@ export default function QuantityField(props) {
           );
         }}
       />
-      {/* validation error message */}
-      <FormHelperText>{errorMessage}</FormHelperText>
+      {/* Không có bug nào ở dây hết :")) */}
+      {/* <FormHelperText>{errorMessage}</FormHelperText> */}
     </FormControl>
   );
 }

@@ -30,14 +30,14 @@ const useStyles = makeStyles((theme) => ({
     position: 'relative',
     top: 10,
     paddingLeft: 10,
-    fontSize: 18,
+    fontSize: 17,
 
     '& a': {
       color: theme.palette.text.primary,
       lineHeight: '20px',
 
       '&:hover': {
-        color: theme.palette.primary.main,
+        color: theme.palette.secondary.main,
       },
     },
   },
@@ -87,7 +87,7 @@ export default function CartItem({ item }) {
     <div>
       <Paper elevation={0} className={classes.root}>
         <Grid container alignItems="center">
-          <Grid item container xs={4}>
+          <Grid item container xs={4} wrap="nowrap">
             <Link to={productDetailUrl} className={classes.thumbnail}>
               <img src={thumbnailUrl} alt={product.name} width="100%" />
             </Link>
@@ -97,7 +97,7 @@ export default function CartItem({ item }) {
             </Box>
           </Grid>
 
-          <Grid item container xs={3} alignItems="center">
+          <Grid item container xs={3} alignItems="center" component={Box} paddingX="15px">
             <Typography variant="body2" className={classes.price}>
               {formatPrice(product.salePrice)}
             </Typography>

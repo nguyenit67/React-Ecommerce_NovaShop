@@ -1,15 +1,22 @@
-import { Box, Container, Grid, makeStyles, Paper } from '@material-ui/core';
-import { Pagination } from '@material-ui/lab';
+import { Box, Container, Grid, makeStyles, Paper, withStyles } from '@material-ui/core';
+import { Pagination, PaginationItem } from '@material-ui/lab';
 import productApi from 'api/productApi';
-import React, { useEffect, useMemo, useState } from 'react';
-import { useHistory, useLocation } from 'react-router-dom';
 import queryString from 'query-string';
+import { useEffect, useMemo, useState } from 'react';
+import { useHistory, useLocation } from 'react-router-dom';
 
+import { KeyboardBackspace } from '@material-ui/icons';
 import FilterViewer from '../components/FilterViewer';
+import NoFoundProduct from '../components/NoFoundProduct';
 import ProductFilters from '../components/ProductFilters';
 import ProductList from '../components/ProductList';
 import ProductSkeletonList from '../components/ProductSkeletonList';
 import ProductSort from '../components/ProductSort';
+
+/**
+ * @typedef {import('@material-ui/lab').PaginationProps} PaginationProps
+ *
+ */
 
 const useStyles = makeStyles((theme) => ({
   root: {},
@@ -29,6 +36,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const TRUTH_TABLE = {
+  true: true,
+  false: false,
+};
+
 export default function ListPage() {
   const classes = useStyles();
   const history = useHistory();
@@ -42,8 +54,8 @@ export default function ListPage() {
       _page: Number.parseInt(params._page) || 1,
       _limit: Number.parseInt(params._limit) || 12,
       _sort: params._sort || 'updated_at:DESC',
-      isFreeShip: params.isFreeShip === 'true',
-      isPromotion: params.isPromotion === 'true',
+      isFreeShip: TRUTH_TABLE[params.isFreeShip] || undefined,
+      isPromotion: TRUTH_TABLE[params.isPromotion] || undefined,
     };
   }, [location.search]);
 
@@ -53,6 +65,7 @@ export default function ListPage() {
     limit: 12,
     total: 10,
   });
+  const totalPageCount = Math.ceil(pagination.total / pagination.limit);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
@@ -136,15 +149,18 @@ export default function ListPage() {
               <ProductSort currentSort={queryParams._sort} onChange={handleSortChange} />
               <FilterViewer filters={queryParams} onChange={setNewFilters} />
 
-              {loading ? <ProductSkeletonList length={9} /> : <ProductList data={productList} />}
+              {loading ? (
+                <ProductSkeletonList length={10} />
+              ) : productList.length === 0 ? (
+                <NoFoundProduct />
+              ) : (
+                <ProductList data={productList} />
+              )}
               <Box className={classes.pagination}>
-                <Pagination
-                  color="primary"
-                  count={Math.ceil(pagination.total / pagination.limit)}
-                  page={pagination.page}
+                <ProductPagination
                   onChange={handlePaginationChange}
-                  siblingCount={1}
-                  boundaryCount={2}
+                  page={pagination.page}
+                  count={totalPageCount || 1}
                 />
               </Box>
             </Paper>
@@ -154,3 +170,57 @@ export default function ListPage() {
     </Box>
   );
 }
+
+/**
+ * @param {PaginationProps} props
+ */
+function ProductPagination(props) {
+  const { siblingCount = 2, page: activePage, count: totalPageCount } = props;
+
+  return (
+    <Pagination
+      color="primary"
+      variant="outlined"
+      siblingCount={siblingCount}
+      renderItem={(item) => {
+        if (item.type === 'start-ellipsis' || item.type === 'end-ellipsis') {
+          return null;
+        }
+        if (item.type === 'previous') {
+          return (
+            activePage > 1 && (
+              <PaginationItem {...item} component={KeyboardBackspace}></PaginationItem>
+            )
+          );
+        }
+        if (item.type === 'next') {
+          return (
+            activePage < totalPageCount && (
+              <PaginationItem
+                {...item}
+                component={withRotate180(KeyboardBackspace)}
+              ></PaginationItem>
+            )
+          );
+        }
+        const siblingCountLeft = activePage === totalPageCount ? siblingCount + 1 : siblingCount;
+        const siblingCountRight = activePage < 2 ? siblingCount + 1 : siblingCount;
+        if (
+          item.page < activePage - siblingCountLeft ||
+          item.page > activePage + siblingCountRight
+        ) {
+          return null;
+        }
+        return <PaginationItem {...item} />;
+      }}
+      {...props}
+    />
+  );
+}
+
+const withRotate180 = (Icon) =>
+  withStyles({
+    root: {
+      transform: 'rotate(180deg)',
+    },
+  })(Icon);
