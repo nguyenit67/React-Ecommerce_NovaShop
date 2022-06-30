@@ -1,8 +1,10 @@
-import { Box, makeStyles, Typography } from '@material-ui/core';
+import { Box, Dialog, DialogContent, makeStyles, Typography } from '@material-ui/core';
 import { STATIC_HOST, THUMBNAIL_PLACEHOLDER } from 'constants/index';
 import PropTypes from 'prop-types';
-import { useHistory } from 'react-router-dom';
+import { useState } from 'react';
+import { Link as RouterLink } from 'react-router-dom';
 import { formatPrice } from 'utils';
+import ProductDetailPreview from './ProductDetailPreview';
 
 Product.propTypes = {
   product: PropTypes.object,
@@ -21,6 +23,10 @@ const useStyles = makeStyles((theme) => ({
         opacity: 0.9,
       },
     },
+    '& a': {
+      color: 'rgba(0, 0, 0, 0.87)',
+      textDecoration: 'none',
+    },
   },
   // thumbnail: {
   //   transition: 'all 0.3s ease-in-out',
@@ -28,32 +34,51 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Product({ product }) {
+  // const history = useHistory();
   const classes = useStyles();
-  const history = useHistory();
   const thumbnailUrl = product.thumbnail
     ? `${STATIC_HOST}${product.thumbnail?.url}`
     : THUMBNAIL_PLACEHOLDER;
+  const [open, setOpen] = useState(false);
+  const productDetailUrl = `/products/${product.id}`;
 
-  const handleClick = () => {
-    // Navigate to detail page: /products/:productId
-    history.push(`/products/${product.id}`);
+  const handleClick = (event) => {
+    // Navigate to detail page /products/:productId
+    event.preventDefault();
+    setOpen(true);
+    window.history.pushState(null, `Sản phẩm ${product.name}`, productDetailUrl);
+  };
+
+  const handleClose = () => {
+    setOpen(false);
+    window.history.back();
   };
 
   return (
-    <Box padding={2} onClick={handleClick} className={classes.root}>
-      <Box minHeight="215px">
-        <img src={thumbnailUrl} alt={product.name} width="100%" />
+    <div>
+      <Box padding={2} className={classes.root}>
+        <RouterLink to={productDetailUrl} onClick={handleClick}>
+          <Box minHeight="215px">
+            <img src={thumbnailUrl} alt={product.name} width="100%" />
+          </Box>
+
+          <Typography variant="body2">{product.name} </Typography>
+          <Typography variant="body2">
+            <Box component="span" fontSize="16px" fontWeight="bold" mr={1}>
+              {formatPrice(product.salePrice)}
+            </Box>
+
+            {product.promotionPercent > 0 ? ` -${product.promotionPercent}%` : ''}
+          </Typography>
+        </RouterLink>
       </Box>
 
-      <Typography variant="body2">{product.name} </Typography>
-      <Typography variant="body2">
-        <Box component="span" fontSize="16px" fontWeight="bold" mr={1}>
-          {formatPrice(product.salePrice)}
-        </Box>
-
-        {product.promotionPercent > 0 ? ` -${product.promotionPercent}%` : ''}
-      </Typography>
-    </Box>
+      <Dialog open={open} onClose={handleClose} fullWidth maxWidth="md">
+        <DialogContent>
+          <ProductDetailPreview product={product} />
+        </DialogContent>
+      </Dialog>
+    </div>
   );
 }
 
